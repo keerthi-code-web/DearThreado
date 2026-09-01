@@ -1,0 +1,982 @@
+
+.
+
+🧵 DEARTHREADO
+MASTER ANTIGRAVITY IMPLEMENTATION SPECIFICATION
+Document status
+STATUS: LOCKED
+This document is the implementation contract for the DearThreado project.
+Antigravity must implement this specification. It must not independently redesign the product, invent features, remove requirements, change workflows, or substitute its own interpretation for the decisions stated here.
+
+1. PROJECT IDENTITY
+Product name
+DearThreado
+The name represents the idea of a meaningful connection between people through handmade and personalized gifts.
+The thread is a central brand metaphor:
+connection between thought → creation → person → memory.
+The project is not intended to feel like a generic e-commerce marketplace.
+It should feel like:
+A beautiful little place where someone can find something meaningful for someone they care about.
+
+2. BRAND IDENTITY
+Primary tagline
+Crafted with care, chosen with heart.
+Supporting emotional message
+Made with care • Gift with meaning.
+Additional brand thought
+Only special persons deserve handmade gifts.
+This phrase may be used selectively in an appropriate emotional/brand area.
+It must not be repeated unnecessarily.
+
+3. BRAND PERSONALITY
+DearThreado must feel:
+Warm 
+Creative 
+Playful 
+Personal 
+Heartfelt 
+Special 
+Premium-cute 
+Human 
+It must not feel:
+childish 
+corporate 
+cold luxury 
+generic marketplace 
+overly decorative 
+visually noisy 
+
+4. LOGO
+Use the supplied finalized DearThreado logo asset.
+The logo concept contains:
+D 
+thread 
+one heart 
+Critical instruction
+DO NOT redesign the logo.
+DO NOT generate another logo.
+DO NOT replace the supplied logo with an icon or text-only logo.
+Use the supplied logo asset consistently.
+
+5. VISUAL REFERENCE
+The supplied screenshots/reference assets represent the visual direction of the current DearThreado implementation.
+They are authoritative visual references for:
+overall atmosphere 
+spacing feel 
+card treatment 
+visual softness 
+animation character 
+color relationship 
+emotional presentation 
+homepage composition 
+However:
+Screenshots are visual references, not permission to copy unfinished implementation mistakes.
+The locked written specification remains the functional source of truth.
+
+6. COLOR SYSTEM
+Use the project's finalized existing palette.
+Primary
+DearThreado Purple
+Background
+Soft lavender-tinted warm white.
+Supporting tones
+Controlled use of:
+soft lavender 
+blush/pink 
+warm cream 
+subtle golden accent 
+Purple must remain the unmistakable primary brand color.
+Important
+Do not introduce an unrelated color system.
+Do not replace the established palette simply because another palette appears more "modern."
+
+7. TYPOGRAPHY
+Headings
+Bold, expressive and modern.
+Emotional statements may use larger typography.
+Body
+Clean and highly readable.
+UI text
+Comfortable sizing and spacing.
+Brand
+Use the supplied logo/wordmark rather than independently inventing brand typography.
+
+8. THREAD — CORE VISUAL LANGUAGE
+The thread is one of DearThreado's defining visual concepts.
+It should appear selectively as a visual language.
+Possible uses:
+subtle curves between sections 
+connecting decorative elements 
+forming/approaching a heart 
+connecting illustrations 
+visual paths 
+personalization sections 
+order journey/status representation 
+selected empty states 
+transitions 
+The thread represents:
+connection between thought, creation, person and memory.
+Rule
+Do not put thread graphics everywhere.
+It should feel intentional and recognizable.
+
+9. HEARTS
+The logo already establishes the heart.
+Therefore:
+Do not turn the website into a collection of hearts.
+Use hearts selectively for:
+emotional messaging 
+personalization 
+selected decorative moments 
+review/thank-you areas 
+meaningful micro-interactions 
+
+10. SPARKLES
+Sparkles may be used subtly to communicate:
+special / creative / delightful.
+Avoid excessive decorative sparkles.
+
+11. ANIMATION
+Allowed
+gentle fade 
+subtle movement 
+hover elevation 
+soft scaling 
+floating decorative elements 
+smooth transitions 
+reliable thread-flow animation 
+Not allowed
+excessive bouncing 
+constant motion 
+distracting particles 
+animation on everything 
+long loading animations 
+animations that make the website feel like a technical demo 
+The website must remain a real shopping experience.
+
+12. CORE PRODUCT POSITIONING
+DearThreado is specifically focused on:
+Handmade + personalized/customizable gifting.
+This is one of our strongest differentiators.
+The product catalog should primarily represent handmade/creative/special gifts.
+It must not become a generic marketplace containing arbitrary mass-market products.
+
+13. CUSTOMER NAVIGATION
+Locked primary navigation:
+Home
+Cart
+My Orders
+My Profile
+Notifications
+Do not invent additional primary navigation such as:
+Shop
+Explore
+Deals
+Wishlist
+Categories
+Offers
+unless explicitly required by the specification.
+A standalone duplicate Categories navigation is not required.
+
+14. CUSTOMER ACCESS
+Visitors may browse without registering.
+Authentication becomes mandatory when a customer needs an authenticated action.
+Authentication-required actions
+Ordering
+When an unauthenticated customer attempts to proceed with an order:
+Show a DearThreado-themed message/modal explaining that an account is required.
+Example tone:
+Your first DearThreado order needs a little introduction. Please register or log in to continue.
+Then redirect to:
+Login / Register
+After successful authentication:
+Return the customer to the point they were at before authentication.
+Do not dump the customer back to Home unnecessarily.
+
+15. PRODUCT REQUEST / FEEDBACK
+This is an important DearThreado feature.
+The homepage contains a dedicated, visually noticeable section for customers who:
+cannot find what they are imagining 
+have a unique gift idea 
+are looking for something specific 
+want to suggest something 
+The section should receive more visual attention than an ordinary informational section.
+Authentication
+Product Request submission requires:
+Customer logged in
+        ↓
+Submit request
+If not authenticated:
+Product Request
+      ↓
+Authentication message
+      ↓
+Login/Register
+      ↓
+Return to request flow
+The request must be associated with the authenticated customer.
+
+16. HOMEPAGE
+The homepage should contain the finalized planned sections.
+At minimum, the customer homepage includes:
+Hero
+ ↓
+Categories
+ ↓
+Product discovery/dynamic product section
+ ↓
+Product Request / Feedback
+ ↓
+Guidance / relevant supporting content
+Hero CTA 1
+Explore Gifts
+Routes/scrolls to the category discovery area.
+Hero CTA 2
+The previous generic "Find Something Special" behavior is replaced.
+It should direct to the dedicated Product Request / Feedback section.
+The wording should communicate the concept of:
+Can't find what you're imagining?
+or
+Have a unique idea?
+The exact finalized UI wording can be selected from this concept while preserving the intended meaning.
+
+17. REMOVE GIFTING PROMPT
+The previously discussed:
+What / whom are you gifting?
+guided gifting prompt is REMOVED from the MVP.
+Do not implement it.
+Do not independently reintroduce it.
+
+18. CATEGORY FLOW
+This is a strict hierarchy.
+CATEGORY
+   ↓
+SUBCATEGORY
+   ↓
+PRODUCTS
+   ↓
+PRODUCT DETAILS
+Do not skip the hierarchy.
+Do not invent unrelated category navigation.
+
+19. PRODUCT CARDS
+Product cards should remain clean and product-focused.
+Primary structure:
+Product Image
+Product Name
+Price
+View Product
+The blueprint specifically describes product browsing and product details as core customer functionality. 
+Avoid unnecessary promotional badges and clutter.
+
+20. PRODUCT DETAILS
+The Product Details page must be reachable from:
+product cards 
+subcategory product listings 
+It must provide the complete information necessary for the customer to understand the product.
+For customizable products it must dynamically display the customization requirements defined for that product.
+
+21. CUSTOMIZATION SYSTEM
+This is a core feature, not an optional decorative addition.
+Customization belongs to the product definition.
+Customer customization belongs to the specific cart/order item.
+For example:
+Product
+ └── Customization Fields
+       ├── Photo
+       ├── Text
+       └── Instructions
+Different products may have different fields.
+Possible field types include:
+image upload 
+text 
+color 
+size 
+quantity 
+descriptive/instruction input 
+Only applicable fields should appear.
+Required fields must be validated.
+The backend must not blindly trust frontend customization data.
+The blueprint explicitly requires customization definitions to belong to products and customization values to remain associated with individual cart/order items. 
+
+22. MULTI-PRODUCT CART
+One customer may have multiple products in the cart.
+Each cart item must preserve its own customization.
+Example:
+Cart
+
+Product A
+ └── customization A
+
+Product B
+ └── customization B
+Two instances of the same product with different customization must remain distinguishable.
+This is explicitly part of the project's intended architecture. 
+
+23. CHECKOUT
+Checkout collects the required delivery information.
+Customer must be authenticated before order creation.
+Required flow:
+Cart
+ ↓
+Checkout
+ ↓
+Authentication if required
+ ↓
+Delivery details
+ ↓
+Requested delivery date
+ ↓
+COD
+ ↓
+Order confirmation
+
+24. PAYMENT
+MVP payment method:
+Cash on Delivery
+Initial payment status:
+Pending
+After delivery/payment verification:
+Paid
+The backend must calculate/verify the actual order total.
+Never blindly trust a total supplied by the frontend.
+
+25. ORDER WORKFLOW
+Strict state flow:
+Placed / New
+      ↓
+Confirmed
+      ↓
+Preparing
+      ↓
+Shipped
+      ↓
+Delivered
+Cancellation is permitted only before Preparing begins.
+Once an order enters:
+Preparing
+customer cancellation is no longer allowed.
+Admin cancellation requires a reason when fulfilment is impossible.
+The blueprint confirms this lifecycle and cancellation boundary. 
+
+26. ORDER STATUS INTEGRITY
+Statuses must move forward logically.
+Do not allow arbitrary reverse transitions such as:
+Delivered → Shipping
+or:
+Preparing → Confirmed
+If a serious exceptional correction is required after a completed/reached status, it must not be handled through casual reverse-status editing.
+Historical information must remain reliable.
+
+27. MY ORDERS
+Customers must be able to see:
+current orders 
+previous orders 
+order status 
+order details 
+cancellation information where applicable 
+relevant payment status 
+The customer should be able to understand what is happening with an order without repeatedly contacting the seller.
+
+28. ORDER DETAILS
+Historical order information must remain meaningful.
+The order must preserve the delivery address used for that order even if the customer's current address changes.
+The blueprint explicitly requires historical order delivery information to remain part of the order record. 
+
+29. REVIEWS
+A customer can review a product only after a qualifying delivered purchase.
+Review flow:
+Delivered order
+      ↓
+Eligible customer
+      ↓
+Submit review
+      ↓
+Admin review
+      ↓
+Approve
+      ↓
+Public product page
+Unapproved reviews must not appear publicly.
+Admin should not casually edit customer-written review content.
+The approval mechanism exists for moderation, not for selectively showing only positive reviews. The blueprint explicitly specifies approval/rejection before public display. 
+
+30. NOTIFICATIONS
+Customer notifications should communicate relevant events.
+Examples:
+order confirmation/status changes 
+cancellation 
+product request response 
+review-related information 
+Admin notifications should identify:
+new order 
+new product request 
+new review 
+customer cancellation 
+Notifications primarily act as attention indicators directing the user to the relevant area. 
+
+31. PROFILE
+Customer profile should provide the information necessary for:
+account details 
+delivery information 
+maintaining the primary/default address 
+The current primary address may be edited.
+Historical orders must not be changed simply because the profile address changes.
+
+32. ADMIN AUTHENTICATION
+There is only one admin for the MVP.
+There must not be public admin registration.
+Admin credentials/configuration must be securely configured through the backend/environment.
+Never hardcode admin credentials in frontend source.
+Admin must authenticate before accessing the dashboard.
+The blueprint explicitly requires secure backend/environment-based admin credentials. 
+
+33. ADMIN WORLD
+Admin enters:
+Admin Login
+     ↓
+Admin Dashboard
+Admin navigation/functionality:
+Admin Dashboard
+│
+├── Categories
+│    └── Subcategories
+│
+├── Products
+│
+├── Customization Fields
+│
+├── Orders
+│
+├── Reviews
+│
+├── Product Requests
+│
+├── Notifications
+│
+└── Admin Settings / Logout
+
+34. ADMIN DASHBOARD
+Dashboard should summarize:
+total categories 
+registered customers 
+new orders 
+pending/uncompleted orders 
+delivered orders 
+cancelled orders 
+recent reviews 
+pending product requests 
+Orders close to requested delivery dates should have a simple visual indication.
+Order status filters/badges should clearly distinguish states.
+These requirements are directly supported by the blueprint. 
+
+35. CATEGORY MANAGEMENT
+Admin can:
+create category 
+edit category 
+delete category 
+provide category image 
+Admin can:
+create subcategory 
+edit subcategory 
+delete subcategory 
+associate subcategory with its parent category 
+Relationship:
+One Category
+    ↓
+Many Subcategories
+
+36. PRODUCT MANAGEMENT
+Product fields include as applicable:
+category 
+subcategory 
+name 
+description 
+price 
+images 
+availability 
+size 
+color/variants 
+specifications 
+created date 
+updated date 
+customization enabled/disabled 
+Admin can:
+create 
+view 
+edit 
+update 
+delete 
+No complex inventory/stock system is required.
+Availability is sufficient.
+These are specified in the blueprint. 
+
+37. PRODUCT REQUEST MANAGEMENT
+Admin receives customer requests.
+Admin can:
+View Request
+    ↓
+Review
+    ↓
+Planned / Not Planned
+    ↓
+Admin Response
+Customer receives/views the response through notifications.
+No complex approval workflow is required.
+
+38. DATABASE
+Use:
+MySQL + InnoDB
+Core entities:
+users
+categories
+subcategories
+products
+product_images
+customization_fields
+cart
+cart_items
+orders
+order_items
+payments
+reviews
+product_requests
+notifications
+Core relationships must preserve:
+Category
+ ↓
+Subcategory
+ ↓
+Product
+ ↓
+Product Images
+ ↓
+Customization Fields
+and:
+Customer
+ ↓
+Cart
+ ↓
+Cart Items
+and:
+Customer
+ ↓
+Orders
+ ↓
+Order Items
+ ↓
+Customization
+The blueprint defines these entities and relationships. 
+
+39. DATA INTEGRITY
+Critical rules:
+preserve historical orders 
+don't destroy historical readability when products are deleted 
+use foreign-key relationships appropriately 
+externalize images 
+store image URLs/public identifiers rather than image binaries 
+preserve historical delivery addresses 
+maintain customization-to-order-item association 
+
+40. TECHNOLOGY
+Locked technology direction:
+Frontend
+React + Vite
+Styling
+CSS + Bootstrap where useful
+Bootstrap must not make the application look like an untouched Bootstrap template.
+Backend
+Node.js + Express
+Database
+MySQL + InnoDB
+Image storage
+Cloudinary
+API testing
+Postman
+Version control
+Git + GitHub
+Secrets
+.env / environment variables.
+These technologies are the ones specified in the project blueprint. 
+
+41. IMAGE HANDLING
+Product images should be externally stored.
+Database stores:
+URL / public identifier
+not binary image data.
+The implementation must account for image upload and retrieval.
+
+42. SAMPLE DATA
+Do not spend implementation time creating the final real product catalog.
+Use controlled sample handmade products.
+The architecture must allow us to replace sample:
+name
+description
+price
+images
+category
+subcategory
+customization
+with real catalog data later.
+Do not hardcode the architecture around the sample products.
+
+43. LOADING EXPERIENCE
+Loading states must feel like part of DearThreado.
+Use simple:
+themed loading message 
+small animation 
+friendly popup/message 
+subtle illustration where appropriate 
+Avoid giant technical spinners.
+
+44. SUCCESS EXPERIENCE
+Successful actions may use a small themed confirmation:
+Success
++
+simple animation
++
+clear message
+Examples:
+registration successful 
+request submitted 
+order placed 
+review submitted 
+Do not use excessive celebration animations.
+
+45. ERROR EXPERIENCE
+Errors must be:
+understandable 
+human-readable 
+visually consistent 
+actionable where possible 
+Never expose raw backend/database errors to customers.
+
+46. RESPONSIVENESS
+The application must work across:
+desktop 
+laptop 
+tablet 
+mobile 
+Mobile must be deliberately designed rather than being a squeezed desktop layout.
+
+47. ACCESSIBILITY / USABILITY
+Maintain:
+readable contrast 
+usable button sizes 
+meaningful labels 
+keyboard-friendly controls where practical 
+accessible form labels 
+understandable validation messages 
+Do not sacrifice usability for decoration.
+
+48. SECURITY
+At minimum:
+secure authentication 
+protected customer actions 
+protected admin routes 
+backend authorization 
+backend validation 
+environment secrets 
+safe password handling 
+no frontend admin credentials 
+no trusting frontend totals 
+validation of customization data 
+validation of order ownership 
+appropriate API error handling 
+
+49. API BEHAVIOR
+Backend APIs must follow the established architecture and business rules.
+Do not create unnecessary APIs simply because they are technically possible.
+Core API domains include:
+Authentication
+Categories
+Subcategories
+Products
+Product Images
+Customization
+Cart
+Orders
+Payments
+Reviews
+Product Requests
+Notifications
+Admin
+
+50. FRONTEND ↔ BACKEND
+Final architecture:
+React
+  ↓
+API
+  ↓
+Express
+  ↓
+Business Logic / Validation
+  ↓
+MySQL
+Images:
+Frontend
+   ↓
+Backend / Upload handling
+   ↓
+Cloudinary
+   ↓
+URL / identifier
+   ↓
+Database
+
+51. GIT
+Git checkpoints are required.
+But:
+A Git commit must NEVER unnecessarily interrupt implementation.
+Antigravity should continue implementation logically rather than stopping after every tiny task just to request a commit.
+Meaningful checkpoints should be created during major stable milestones.
+
+52. SELF-VERIFICATION
+Antigravity must verify its implementation during development.
+It should:
+implement 
+inspect 
+run relevant checks 
+detect errors 
+fix errors 
+re-run checks 
+continue 
+Do not knowingly leave broken imports, routes, API calls, database references or obvious runtime errors.
+
+53. NO-INVENTION RULE
+ABSOLUTE RULE
+Antigravity must NOT:
+invent new features 
+remove locked features 
+redesign workflows 
+add unrelated pages 
+add unnecessary navigation 
+add unnecessary authentication requirements 
+change business rules 
+replace the visual identity 
+redesign the logo 
+introduce a generic e-commerce template 
+introduce unnecessary payment systems 
+introduce inventory management 
+introduce wishlist unless explicitly specified 
+introduce marketplace/seller functionality 
+introduce AI recommendation systems 
+introduce a gifting quiz 
+reintroduce the removed gifting prompt 
+If something is genuinely ambiguous or technically blocking:
+STOP and report the ambiguity rather than inventing a solution.
+
+54. MVP BOUNDARY
+The internship implementation must remain an achievable MVP.
+Do not build the future multi-creator marketplace now.
+The architecture should be sensible enough to support future expansion, but future features are not implementation requirements.
+The blueprint itself emphasizes prioritizing core workflow reliability over extra features. 
+
+55. CORE CUSTOMER SUCCESS CRITERION
+A complete implementation must allow:
+Visitor
+ ↓
+Browse
+ ↓
+Category
+ ↓
+Subcategory
+ ↓
+Product
+ ↓
+Customize
+ ↓
+Cart
+ ↓
+Checkout
+ ↓
+Login/Register
+ ↓
+Delivery details
+ ↓
+COD
+ ↓
+Place Order
+ ↓
+Track Status
+ ↓
+Delivered
+ ↓
+Review
+with the corresponding admin workflow:
+Admin Login
+ ↓
+Dashboard
+ ↓
+Receive Order
+ ↓
+Review
+ ↓
+Confirm
+ ↓
+Preparing
+ ↓
+Shipped
+ ↓
+Delivered
+ ↓
+Payment marked Paid
+This is the heart of the project.
+
+56. PRODUCT REQUEST SUCCESS CRITERION
+Customer
+ ↓
+Product Request
+ ↓
+Login/Register if required
+ ↓
+Submit
+ ↓
+Admin receives notification
+ ↓
+Admin reviews
+ ↓
+Planned / Not Planned
+ ↓
+Admin response
+ ↓
+Customer notification
+
+57. REVIEW SUCCESS CRITERION
+Customer purchases
+ ↓
+Order delivered
+ ↓
+Review becomes eligible
+ ↓
+Customer submits
+ ↓
+Admin reviews
+ ↓
+Approve / Reject
+ ↓
+Approved review appears on product
+
+58. ADMIN ORDER SAFETY
+Admin must not be able to casually break the order lifecycle.
+Allowed progression:
+New
+ ↓
+Confirmed
+ ↓
+Preparing
+ ↓
+Shipped
+ ↓
+Delivered
+Cancellation:
+New / Confirmed
+        ↓
+    Cancelled
+but not after Preparing begins.
+
+59. EXPECTED FINAL RESULT
+Antigravity must produce a working full-stack DearThreado application containing:
+Customer
+responsive homepage 
+categories 
+subcategories 
+products 
+product details 
+dynamic customization 
+cart 
+checkout 
+authentication 
+COD 
+orders 
+order details/status 
+profile 
+notifications 
+reviews 
+product requests 
+Admin
+protected admin login 
+dashboard 
+category/subcategory management 
+product management 
+customization management 
+order management 
+review management 
+product-request management 
+notifications 
+settings/logout 
+Technical
+React/Vite 
+Node/Express 
+MySQL 
+Cloudinary 
+REST APIs 
+authentication 
+validation 
+Git/GitHub 
+environment configuration 
+
+60. COMPLETION CONDITION
+Antigravity must not consider the project complete merely because:
+"The pages have been created."
+Completion means:
+UI exists
++
+routes work
++
+frontend works
++
+backend works
++
+database works
++
+authentication works
++
+customization works
++
+cart works
++
+orders work
++
+admin works
++
+requests work
++
+reviews work
++
+notifications work
++
+validation works
++
+major errors resolved
++
+integration verified
+
+61. FINAL AUTHORITY
+When there is a conflict:
+Priority 1
+This locked DearThreado specification
+Priority 2
+Supplied DearThreado visual/logo references
+Priority 3
+Existing project blueprint
+Priority 4
+Technical implementation judgment
+Technical judgment must not override a locked product decision without reporting the conflict.
+
+62. FINAL INSTRUCTION TO ANTIGRAVITY
+Build DearThreado as specified.
+Do not build what you think a modern e-commerce website should be.
+Build what is written here.
+Do not optimize the product by changing the product.
+Do not invent missing features.
+Do not simplify away important requirements.
+Do not add unnecessary functionality.
+Do not redesign the brand.
+Do not redesign the logo.
+Do not replace the visual identity.
+Do not alter the customer journey.
+Do not alter the admin workflow.
+When something is technically unclear and cannot be safely resolved from this specification, report it rather than inventing a requirement.
+The objective is not to make a generic impressive website.
+The objective is to implement DearThreado.

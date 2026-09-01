@@ -1,0 +1,139 @@
+:root {
+  --dt-purple-primary: #7C3AED;
+  --dt-purple-hover: #6D28D9;
+  --dt-purple-dark: #4C1D95;
+  --dt-purple-light: #DDD6FE;
+  --dt-lavender-bg: #FAF8FF;
+  --dt-lavender-card: #F5F2FE;
+  --dt-blush-pink: #FCE7F3;
+  --dt-warm-cream: #FEF3C7;
+  --dt-gold-accent: #D97706;
+  --dt-text-dark: #1E1B4B;
+  --dt-text-muted: #6B7280;
+  --dt-radius-card: 20px;
+  --dt-radius-button: 9999px;
+  --dt-shadow-sm: 0 4px 15px rgba(124, 58, 237, 0.05);
+  --dt-shadow-md: 0 10px 25px rgba(124, 58, 237, 0.09);
+  --dt-font-heading: 'Plus Jakarta Sans', sans-serif;
+  --dt-font-display: 'Playfair Display', serif;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--dt-font-heading);
+  background-color: var(--dt-lavender-bg);
+  color: var(--dt-text-dark);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--dt-font-heading);
+  font-weight: 700;
+  color: var(--dt-text-dark);
+}
+
+.font-editorial {
+  font-family: var(--dt-font-display);
+}
+
+/* DearThreado Cards */
+.dt-card {
+  background: #ffffff;
+  border-radius: var(--dt-radius-card);
+  border: 1px solid rgba(124, 58, 237, 0.08);
+  box-shadow: var(--dt-shadow-sm);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+.dt-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--dt-shadow-md);
+  border-color: rgba(124, 58, 237, 0.2);
+}
+
+/* DearThreado Primary Button */
+.btn-dt-primary {
+  background-color: var(--dt-purple-primary);
+  color: #ffffff;
+  font-weight: 600;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--dt-radius-button);
+  border: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.3);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-dt-primary:hover {
+  background-color: var(--dt-purple-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(124, 58, 237, 0.4);
+}
+
+/* DearThreado Secondary Button */
+.btn-dt-secondary {
+  background-color: #ffffff;
+  color: var(--dt-purple-primary);
+  font-weight: 600;
+  padding: 0.75rem 1.75rem;
+  border-radius: var(--dt-radius-button);
+  border: 1.5px solid var(--dt-purple-light);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.btn-dt-secondary:hover {
+  background-color: var(--dt-lavender-card);
+  color: var(--dt-purple-hover);
+  border-color: var(--dt-purple-primary);
+}
+
+/* DearThreado Badge */
+.dt-badge-purple {
+  background-color: var(--dt-purple-light);
+  color: var(--dt-purple-dark);
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+}
+
+.dt-badge-gold {
+  background-color: var(--dt-warm-cream);
+  color: var(--dt-gold-accent);
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: 9999px;
+  font-size: 0.85rem;
+}
+
+/* Thread Divider Path */
+.thread-divider {
+  width: 100%;
+  height: 40px;
+  stroke: var(--dt-purple-light);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 6 4;
+}
+
+/* Pulse animation for notifications */
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.pulse-badge {
+  animation: pulse-ring 2s infinite ease-in-out;
+}

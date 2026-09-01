@@ -1,0 +1,13 @@
+{
+  "name": "dearthreado",
+  "version": "1.0.0",
+  "description": "DearThreado — Handmade & Personalized Gifting Platform",
+  "scripts": {
+    "start": "npm run start --prefix backend",
+    "server": "npm run dev --prefix backend",
+    "client": "npm run dev --prefix frontend",
+    "db:init": "npm run db:init --prefix backend",
+    "db:seed": "npm run db:seed --prefix backend",
+    "build:client": "npm run build --prefix frontend"
+  }
+}
