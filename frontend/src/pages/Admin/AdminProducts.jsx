@@ -25,6 +25,32 @@ const AdminProducts = () => {
     images: [''],
     customizations: []
   });
+  const [prodUploading, setProdUploading] = useState(false);
+
+  const handleProdImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      setProdUploading(true);
+      const res = await api.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      if (res.data.success) {
+        const newImgs = [...prodForm.images];
+        newImgs[0] = res.data.image_url;
+        setProdForm(prev => ({ ...prev, images: newImgs }));
+      } else {
+        alert(res.data.message || 'Image upload failed.');
+      }
+    } catch (err) {
+      console.error('Product image upload error:', err);
+      alert('Failed to upload image file.');
+    } finally {
+      setProdUploading(false);
+    }
+  };
 
   const fetchProductsAndCategories = async () => {
     try {
@@ -306,10 +332,28 @@ const AdminProducts = () => {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label small fw-semibold">Primary Image URL</label>
+                      <label className="form-label small fw-semibold">Primary Product Image</label>
+                      <div className="d-flex align-items-center gap-3 mb-2">
+                        {prodForm.images[0] ? (
+                          <img src={prodForm.images[0]} alt="Preview" className="rounded-3 border" width="50" height="50" style={{ objectFit: 'cover' }} />
+                        ) : (
+                          <div className="rounded-3 border bg-light d-flex align-items-center justify-content-center text-muted small" style={{ width: '50px', height: '50px' }}>No Img</div>
+                        )}
+                        <div className="flex-grow-1">
+                          <input 
+                            type="file" 
+                            accept="image/*" 
+                            className="form-control rounded-3 form-control-sm" 
+                            onChange={handleProdImageUpload} 
+                            disabled={prodUploading}
+                          />
+                          {prodUploading && <span className="small text-purple mt-1 d-block" style={{ color: '#7C3AED' }}>Uploading image...</span>}
+                        </div>
+                      </div>
                       <input 
                         type="text" 
-                        className="form-control rounded-3"
+                        className="form-control rounded-3 form-control-sm text-muted"
+                        placeholder="Or enter Image URL manually..."
                         value={prodForm.images[0] || ''}
                         onChange={(e) => {
                           const newImgs = [...prodForm.images];
@@ -410,7 +454,7 @@ const AdminProducts = () => {
 
                 <div className="modal-footer border-0">
                   <button type="button" className="btn btn-light" onClick={() => setShowProductModal(false)}>Cancel</button>
-                  <button type="submit" className="btn-dt-primary">Save Product</button>
+                  <button type="submit" className="btn-dt-primary" disabled={prodUploading}>Save Product</button>
                 </div>
               </form>
             </div>

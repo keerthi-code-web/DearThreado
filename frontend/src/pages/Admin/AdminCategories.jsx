@@ -9,10 +9,58 @@ const AdminCategories = () => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [catForm, setCatForm] = useState({ name: '', slug: '', description: '', image_url: '' });
+  const [catUploading, setCatUploading] = useState(false);
 
   const [showSubcategoryModal, setShowSubcategoryModal] = useState(false);
   const [editingSubcategory, setEditingSubcategory] = useState(null);
   const [subForm, setSubForm] = useState({ category_id: '', name: '', slug: '', description: '', image_url: '' });
+  const [subUploading, setSubUploading] = useState(false);
+
+  const handleCatImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      setCatUploading(true);
+      const res = await api.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      if (res.data.success) {
+        setCatForm(prev => ({ ...prev, image_url: res.data.image_url }));
+      } else {
+        alert(res.data.message || 'Image upload failed.');
+      }
+    } catch (err) {
+      console.error('Category image upload error:', err);
+      alert('Failed to upload image file.');
+    } finally {
+      setCatUploading(false);
+    }
+  };
+
+  const handleSubImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('image', file);
+    try {
+      setSubUploading(true);
+      const res = await api.post('/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      if (res.data.success) {
+        setSubForm(prev => ({ ...prev, image_url: res.data.image_url }));
+      } else {
+        alert(res.data.message || 'Image upload failed.');
+      }
+    } catch (err) {
+      console.error('Subcategory image upload error:', err);
+      alert('Failed to upload image file.');
+    } finally {
+      setSubUploading(false);
+    }
+  };
 
   const fetchCategories = async () => {
     try {
@@ -220,13 +268,36 @@ const AdminCategories = () => {
                     <textarea className="form-control rounded-3" rows="2" value={catForm.description} onChange={(e) => setCatForm({ ...catForm, description: e.target.value })}></textarea>
                   </div>
                   <div className="mb-3">
-                    <label className="form-label small fw-semibold">Image URL</label>
-                    <input type="text" className="form-control rounded-3" value={catForm.image_url} onChange={(e) => setCatForm({ ...catForm, image_url: e.target.value })} />
+                    <label className="form-label small fw-semibold">Category Image</label>
+                    <div className="d-flex align-items-center gap-3 mb-2">
+                      {catForm.image_url ? (
+                        <img src={catForm.image_url} alt="Preview" className="rounded-3 border" width="50" height="50" style={{ objectFit: 'cover' }} />
+                      ) : (
+                        <div className="rounded-3 border bg-light d-flex align-items-center justify-content-center text-muted small" style={{ width: '50px', height: '50px' }}>No Img</div>
+                      )}
+                      <div className="flex-grow-1">
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="form-control rounded-3 form-control-sm" 
+                          onChange={handleCatImageUpload} 
+                          disabled={catUploading}
+                        />
+                        {catUploading && <span className="small text-purple mt-1 d-block" style={{ color: '#7C3AED' }}>Uploading image...</span>}
+                      </div>
+                    </div>
+                    <input 
+                      type="text" 
+                      className="form-control rounded-3 form-control-sm text-muted" 
+                      placeholder="Or enter Image URL manually..."
+                      value={catForm.image_url} 
+                      onChange={(e) => setCatForm({ ...catForm, image_url: e.target.value })} 
+                    />
                   </div>
                 </div>
                 <div className="modal-footer border-0">
                   <button type="button" className="btn btn-light" onClick={() => setShowCategoryModal(false)}>Cancel</button>
-                  <button type="submit" className="btn-dt-primary">Save Category</button>
+                  <button type="submit" className="btn-dt-primary" disabled={catUploading}>Save Category</button>
                 </div>
               </form>
             </div>
@@ -275,13 +346,36 @@ const AdminCategories = () => {
                     <textarea className="form-control rounded-3" rows="2" value={subForm.description} onChange={(e) => setSubForm({ ...subForm, description: e.target.value })}></textarea>
                   </div>
                   <div className="mb-3">
-                    <label className="form-label small fw-semibold">Image URL</label>
-                    <input type="text" className="form-control rounded-3" value={subForm.image_url} onChange={(e) => setSubForm({ ...subForm, image_url: e.target.value })} />
+                    <label className="form-label small fw-semibold">Subcategory Image</label>
+                    <div className="d-flex align-items-center gap-3 mb-2">
+                      {subForm.image_url ? (
+                        <img src={subForm.image_url} alt="Preview" className="rounded-3 border" width="50" height="50" style={{ objectFit: 'cover' }} />
+                      ) : (
+                        <div className="rounded-3 border bg-light d-flex align-items-center justify-content-center text-muted small" style={{ width: '50px', height: '50px' }}>No Img</div>
+                      )}
+                      <div className="flex-grow-1">
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          className="form-control rounded-3 form-control-sm" 
+                          onChange={handleSubImageUpload} 
+                          disabled={subUploading}
+                        />
+                        {subUploading && <span className="small text-purple mt-1 d-block" style={{ color: '#7C3AED' }}>Uploading image...</span>}
+                      </div>
+                    </div>
+                    <input 
+                      type="text" 
+                      className="form-control rounded-3 form-control-sm text-muted" 
+                      placeholder="Or enter Image URL manually..."
+                      value={subForm.image_url} 
+                      onChange={(e) => setSubForm({ ...subForm, image_url: e.target.value })} 
+                    />
                   </div>
                 </div>
                 <div className="modal-footer border-0">
                   <button type="button" className="btn btn-light" onClick={() => setShowSubcategoryModal(false)}>Cancel</button>
-                  <button type="submit" className="btn-dt-primary">Save Subcategory</button>
+                  <button type="submit" className="btn-dt-primary" disabled={subUploading}>Save Subcategory</button>
                 </div>
               </form>
             </div>
