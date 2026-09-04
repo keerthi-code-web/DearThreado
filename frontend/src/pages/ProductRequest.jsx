@@ -12,7 +12,7 @@ const ProductRequest = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    budget_range: '$20 - $50',
+    budget_range: 'Under ₹500',
     reference_image_url: ''
   });
 
@@ -59,7 +59,7 @@ const ProductRequest = () => {
       const res = await api.post('/requests', formData);
       if (res.data.success) {
         setSuccessMsg(res.data.message);
-        setFormData({ title: '', description: '', budget_range: '$20 - $50', reference_image_url: '' });
+        setFormData({ title: '', description: '', budget_range: 'Under ₹500', reference_image_url: '' });
       }
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to submit request.');

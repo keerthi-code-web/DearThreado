@@ -85,57 +85,86 @@ const AdminRequests = () => {
       </div>
 
       <div className="row g-4">
-        {requests.map((req) => (
-          <div key={req.id} className="col-12">
-            <div className="dt-card p-4">
-              <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-start mb-3 gap-2">
-                <div>
-                  <h5 className="fw-bold text-dark mb-1">{req.title}</h5>
-                  <div className="small text-muted">
-                    Submitted by <strong>{req.customer_name}</strong> ({req.customer_email} &bull; {req.customer_phone})
+        {requests.map((req) => {
+          const formattedBudget = req.budget_range 
+            ? (req.budget_range.includes('$') ? req.budget_range.replace(/\$/g, '₹') : req.budget_range)
+            : 'N/A';
+
+          return (
+            <div key={req.id} className="col-12">
+              <div className="dt-card p-4">
+                <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-start mb-3 gap-2 border-bottom pb-3">
+                  <div>
+                    <h5 className="fw-bold text-dark mb-1">{req.title || 'Custom Gift Request'}</h5>
+                    <div className="small text-muted">
+                      Submitted by <strong className="text-dark">{req.customer_name}</strong> ({req.customer_email} &bull; {req.customer_phone})
+                    </div>
+                  </div>
+
+                  <div className="d-flex align-items-center gap-2">
+                    <span className={`badge ${req.status === 'Planned' ? 'bg-success' : req.status === 'Reviewed' ? 'bg-info' : req.status === 'Not Planned' ? 'bg-secondary' : 'bg-warning text-dark'}`}>
+                      {req.status}
+                    </span>
+                    <button 
+                      onClick={() => {
+                        setRespondingReq(req);
+                        setRespStatus(req.status === 'Submitted' ? 'Reviewed' : req.status);
+                        setAdminResponseText(req.admin_response || '');
+                      }} 
+                      className="btn btn-sm btn-dt-primary"
+                    >
+                      Respond / Update
+                    </button>
                   </div>
                 </div>
 
-                <div className="d-flex align-items-center gap-2">
-                  <span className={`badge ${req.status === 'Planned' ? 'bg-success' : req.status === 'Reviewed' ? 'bg-info' : req.status === 'Not Planned' ? 'bg-secondary' : 'bg-warning text-dark'}`}>
-                    {req.status}
-                  </span>
-                  <button 
-                    onClick={() => {
-                      setRespondingReq(req);
-                      setRespStatus(req.status === 'Submitted' ? 'Reviewed' : req.status);
-                      setAdminResponseText(req.admin_response || '');
-                    }} 
-                    className="btn btn-sm btn-dt-primary"
-                  >
-                    Respond / Update
-                  </button>
+                {/* Customer Request / Message Box */}
+                <div className="p-3 bg-light rounded-3 mb-3 border">
+                  <div className="fw-bold text-purple-dark small mb-1" style={{ color: '#4C1D95', fontSize: '0.78rem', letterSpacing: '0.5px' }}>
+                    REQUEST / CUSTOMER MESSAGE:
+                  </div>
+                  <p className="text-dark small mb-0" style={{ whiteSpace: 'pre-wrap' }}>{req.description}</p>
                 </div>
+                
+                <div className="d-flex flex-wrap gap-4 text-muted small mb-3">
+                  <div>Budget Range: <strong className="text-dark">{formattedBudget}</strong></div>
+                  <div>Submitted Date: <strong className="text-dark">{formatDateTime(req.created_at)}</strong></div>
+                </div>
+
+                {req.reference_image_url && (
+                  <div className="mb-3 p-3 bg-white border rounded-3 d-flex align-items-center justify-content-between gap-3">
+                    <div className="d-flex align-items-center gap-3">
+                      <img src={req.reference_image_url} alt="Reference" className="rounded-3 border" width="60" height="60" style={{ objectFit: 'cover' }} />
+                      <div>
+                        <span className="small fw-bold text-dark d-block">Reference Photo</span>
+                        <a href={req.reference_image_url} target="_blank" rel="noopener noreferrer" className="small text-purple text-decoration-none" style={{ color: '#7C3AED' }}>
+                          View Original Image ↗
+                        </a>
+                      </div>
+                    </div>
+                    <a 
+                      href={req.reference_image_url} 
+                      download 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="btn btn-sm btn-outline-purple py-1 px-3 rounded-2"
+                      style={{ color: '#7C3AED', borderColor: '#DDD6FE' }}
+                    >
+                      Download Photo
+                    </a>
+                  </div>
+                )}
+
+                {req.admin_response && (
+                  <div className="p-3 rounded-3 bg-light border-start border-4 border-purple mt-3">
+                    <div className="fw-bold small text-purple-dark" style={{ color: '#4C1D95' }}>Admin Response:</div>
+                    <p className="small text-muted mb-0">{req.admin_response}</p>
+                  </div>
+                )}
               </div>
-
-              <p className="text-dark small mb-2">{req.description}</p>
-              
-              <div className="d-flex flex-wrap gap-3 text-muted small mb-3">
-                <span>Budget: <strong>{req.budget_range || 'N/A'}</strong></span>
-                <span>Submitted: <strong>{formatDateTime(req.created_at)}</strong></span>
-              </div>
-
-              {req.reference_image_url && (
-                <div className="mb-3">
-                  <span className="small fw-semibold text-muted d-block mb-1">Reference Photo:</span>
-                  <img src={req.reference_image_url} alt="Reference" className="rounded-3 border" width="100" height="100" style={{ objectFit: 'cover' }} />
-                </div>
-              )}
-
-              {req.admin_response && (
-                <div className="p-3 rounded-3 bg-light border-start border-4 border-purple mt-3">
-                  <div className="fw-bold small text-purple-dark" style={{ color: '#4C1D95' }}>Admin Response:</div>
-                  <p className="small text-muted mb-0">{req.admin_response}</p>
-                </div>
-              )}
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Response Modal */}
@@ -157,7 +186,7 @@ const AdminRequests = () => {
                       onChange={(e) => setRespStatus(e.target.value)}
                     >
                       <option value="Reviewed">Reviewed</option>
-                      <option value="Planned">Planned (In Crafting Pipeline)</option>
+                      <option value="Planned">Planned</option>
                       <option value="Not Planned">Not Planned</option>
                     </select>
                   </div>

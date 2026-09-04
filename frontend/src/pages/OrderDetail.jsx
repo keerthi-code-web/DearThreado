@@ -190,9 +190,21 @@ const OrderDetail = () => {
                       {item.customization_values && Object.keys(item.customization_values).length > 0 && (
                         <div className="p-2 rounded bg-light small mt-2 border text-muted">
                           <strong className="text-purple-dark" style={{ color: '#4C1D95' }}>Customization:</strong>
-                          {Object.entries(item.customization_values).map(([k, v]) => (
-                            <div key={k}><span>{k}:</span> {String(v)}</div>
-                          ))}
+                          {Object.entries(item.customization_values).map(([k, v]) => {
+                            const valStr = String(v || '');
+                            const isImg = valStr.includes('/uploads/') || /\.(jpeg|jpg|png|webp|gif)(\?.*)?$/i.test(valStr);
+                            return (
+                              <div key={k} className="mt-1">
+                                <span className="fw-semibold">{k}:</span>{' '}
+                                {isImg ? (
+                                  <a href={valStr} target="_blank" rel="noopener noreferrer" className="d-inline-flex align-items-center gap-1.5 text-purple text-decoration-none ms-1">
+                                    <img src={valStr} alt={k} className="rounded border" width="32" height="32" style={{ objectFit: 'cover' }} />
+                                    <span className="small text-purple" style={{ color: '#7C3AED' }}>View Photo ↗</span>
+                                  </a>
+                                ) : valStr}
+                              </div>
+                            );
+                          })}
                         </div>
                       )}
                     </div>

@@ -1,8 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import { Package, Calendar, CheckCircle, AlertTriangle, Eye, XCircle } from 'lucide-react';
+import { Package, Calendar, CheckCircle, AlertTriangle, Eye, XCircle, Download } from 'lucide-react';
 import api from '../../services/api';
 import StatusBadge from '../../components/StatusBadge';
 import { formatDate } from '../../utils/formatters';
+
+const isImageUrl = (val) => {
+  if (typeof val !== 'string') return false;
+  return (
+    val.includes('/uploads/') ||
+    val.startsWith('data:image/') ||
+    /\.(jpeg|jpg|png|webp|gif)(\?.*)?$/i.test(val)
+  );
+};
+
+const handleDownloadImage = async (imageUrl, fileNamePrefix = 'customization-photo') => {
+  try {
+    const res = await fetch(imageUrl);
+    const blob = await res.blob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = blobUrl;
+    const ext = (imageUrl.split('.').pop() || 'jpg').split('?')[0];
+    a.download = `${fileNamePrefix}.${ext}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (err) {
+    window.open(imageUrl, '_blank');
+  }
+};
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -114,27 +141,26 @@ const AdminOrders = () => {
 
   return (
     <div className="container py-5">
-      <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
-        <div>
-          <h2 className="fw-bold text-dark mb-1">Order Management & Tracking</h2>
-          <p className="text-muted small mb-0">Manage customer order status, Cash on Delivery payments, and delivery details</p>
-        </div>
-
-        {/* Status Filter Pills */}
-        <div className="d-flex align-items-center gap-2 overflow-x-auto">
-          {['', 'Placed', 'Confirmed', 'Preparing', 'Shipped', 'Delivered', 'Cancelled'].map((st) => (
-            <button
-              key={st}
-              onClick={() => setStatusFilter(st)}
-              className={`btn btn-sm rounded-pill px-3 fw-semibold ${statusFilter === st ? 'btn-dt-primary' : 'btn-dt-secondary'}`}
-            >
-              {st || 'All Orders'}
-            </button>
-          ))}
-        </div>
+      {/* 1. ORDERS TITLE + DESCRIPTION */}
+      <div className="mb-4">
+        <h2 className="fw-bold text-dark mb-1">Order Management & Tracking</h2>
+        <p className="text-muted small mb-0">Manage customer order status, Cash on Delivery payments, and delivery details</p>
       </div>
 
-      {/* Orders Table */}
+      {/* 2. FILTERS */}
+      <div className="d-flex align-items-center gap-2 overflow-x-auto mb-4">
+        {['', 'Placed', 'Confirmed', 'Preparing', 'Shipped', 'Delivered', 'Cancelled'].map((st) => (
+          <button
+            key={st}
+            onClick={() => setStatusFilter(st)}
+            className={`btn btn-sm rounded-pill px-3 fw-semibold ${statusFilter === st ? 'btn-dt-primary' : 'btn-dt-secondary'}`}
+          >
+            {st || 'All Orders'}
+          </button>
+        ))}
+      </div>
+
+      {/* 3. ORDER LISTING */}
       <div className="dt-card p-4">
         <div className="table-responsive">
           <table className="table table-hover align-middle small">
@@ -253,16 +279,55 @@ const AdminOrders = () => {
                 <h6 className="fw-bold text-dark mb-2">Items & Customization Snapshots</h6>
                 <div className="divide-y max-h-250 overflow-y-auto mb-3">
                   {selectedOrder.items?.map((item) => (
-                    <div key={item.id} className="py-2 border-bottom d-flex justify-content-between align-items-center">
-                      <div>
-                        <div className="fw-bold small">{item.product_name} x {item.quantity}</div>
-                        {item.customization_values && Object.keys(item.customization_values).length > 0 && (
-                          <div className="small text-muted fst-italic">
-                            {Object.entries(item.customization_values).map(([k, v]) => `${k}: ${v}`).join(' | ')}
-                          </div>
-                        )}
+                    <div key={item.id} className="py-3 border-bottom">
+                      <div className="d-flex justify-content-between align-items-center mb-1">
+                        <div className="fw-bold small text-dark">{item.product_name} x {item.quantity}</div>
+                        <div className="fw-bold small" style={{ color: '#7C3AED' }}>₹{parseFloat(item.subtotal).toFixed(2)}</div>
                       </div>
-                      <div className="fw-bold small">₹{parseFloat(item.subtotal).toFixed(2)}</div>
+                      
+                      {item.customization_values && Object.keys(item.customization_values).length > 0 && (
+                        <div className="mt-2 p-3 bg-light rounded-3 border">
+                          <div className="fw-bold small mb-2" style={{ color: '#7C3AED', fontSize: '0.8rem' }}>
+                            CUSTOMIZATION DETAILS:
+                          </div>
+                          <div className="d-flex flex-column gap-2">
+                            {Object.entries(item.customization_values).map(([k, v]) => {
+                              const valStr = String(v || '');
+                              const isImg = isImageUrl(valStr);
+
+                              if (isImg) {
+                                return (
+                                  <div key={k} className="p-2.5 bg-white rounded-3 border d-flex align-items-center justify-content-between gap-3">
+                                    <div className="d-flex align-items-center gap-3">
+                                      <img src={valStr} alt={k} className="rounded-2 border" width="55" height="55" style={{ objectFit: 'cover' }} />
+                                      <div>
+                                        <div className="fw-semibold small text-dark">{k}</div>
+                                        <a href={valStr} target="_blank" rel="noopener noreferrer" className="small text-muted text-decoration-none" style={{ fontSize: '0.78rem' }}>
+                                          View Full Image ↗
+                                        </a>
+                                      </div>
+                                    </div>
+                                    <button 
+                                      type="button"
+                                      onClick={() => handleDownloadImage(valStr, `${selectedOrder.order_number}-${item.product_name.replace(/\s+/g, '_')}-${k.replace(/\s+/g, '_')}`)} 
+                                      className="btn btn-sm btn-outline-purple d-flex align-items-center gap-1.5 py-1 px-2.5 rounded-2"
+                                      style={{ color: '#7C3AED', borderColor: '#DDD6FE', fontSize: '0.8rem' }}
+                                    >
+                                      <Download size={14} /> Download Image
+                                    </button>
+                                  </div>
+                                );
+                              }
+
+                              return (
+                                <div key={k} className="small text-dark">
+                                  <span className="fw-semibold text-muted">{k}:</span> {valStr}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
