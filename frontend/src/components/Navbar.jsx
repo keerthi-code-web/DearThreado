@@ -60,15 +60,13 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 style={{ color: isActive('/cart') ? '#7C3AED' : '#1E1B4B' }}
               >
-                <span className="d-inline-flex align-items-center me-1.5 position-relative">
-                  <ShoppingBag size={18} />
-                  {cartCount > 0 && (
-                    <span className="badge rounded-pill text-white ms-1" style={{ backgroundColor: '#7C3AED', fontSize: '0.7rem', padding: '0.2em 0.45em' }}>
-                      {cartCount}
-                    </span>
-                  )}
-                </span>
-                Cart
+                <ShoppingBag size={18} className="me-1.5" />
+                <span className="me-1">Cart</span>
+                {cartCount > 0 && (
+                  <span className="badge rounded-pill text-white" style={{ backgroundColor: '#7C3AED', fontSize: '0.75rem', padding: '0.2em 0.5em' }}>
+                    {cartCount}
+                  </span>
+                )}
               </Link>
             </li>
             <li className="nav-item">
@@ -100,15 +98,13 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 style={{ color: isActive('/notifications') ? '#7C3AED' : '#1E1B4B' }}
               >
-                <span className="d-inline-flex align-items-center me-1.5 position-relative">
-                  <Bell size={18} />
-                  {unreadCount > 0 && (
-                    <span className="badge rounded-pill bg-danger pulse-badge ms-1" style={{ fontSize: '0.7rem', padding: '0.2em 0.45em' }}>
-                      {unreadCount}
-                    </span>
-                  )}
-                </span>
-                Notifications
+                <Bell size={18} className="me-1.5" />
+                <span className="me-1">Notifications</span>
+                {unreadCount > 0 && (
+                  <span className="badge rounded-pill bg-danger pulse-badge" style={{ fontSize: '0.75rem', padding: '0.2em 0.5em' }}>
+                    {unreadCount}
+                  </span>
+                )}
               </Link>
             </li>
           </ul>

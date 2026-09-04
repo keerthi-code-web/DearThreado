@@ -1,15 +1,83 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, ArrowRight, Heart, MessageCircleHeart, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Sparkles, ArrowRight, Heart, MessageCircleHeart, CheckCircle2, ChevronLeft, ChevronRight, Mail, MailOpen } from 'lucide-react';
 import api from '../services/api';
 import ProductCard from '../components/ProductCard';
 import ThreadCurve from '../components/ThreadCurve';
+
+const emotionalMessages = [
+  {
+    id: 1,
+    tag: "Ordinary Moments",
+    title: "Making Days Special",
+    peek: "Sometimes a gift doesn't make a special day better...",
+    message: "Sometimes a gift doesn't make a special day better. It makes an ordinary day feel special.",
+    accent: "#7C3AED",
+    bg: "#FAF8FF"
+  },
+  {
+    id: 2,
+    tag: "Why We Gift",
+    title: "Reminding Someone",
+    peek: "We gift not just to celebrate a moment...",
+    message: "We gift not just to celebrate a moment, but to remind someone how much they mean to us.",
+    accent: "#EC4899",
+    bg: "#FDF2F8"
+  },
+  {
+    id: 3,
+    tag: "Handmade Value",
+    title: "Carrying Someone's Time",
+    peek: "Handmade is more than something made by hand...",
+    message: "Handmade is more than something made by hand. It carries someone's time, patience, and effort.",
+    accent: "#8B5CF6",
+    bg: "#F5F3FF"
+  },
+  {
+    id: 4,
+    tag: "Time & Effort",
+    title: "A Piece of Time",
+    peek: "Time is something we can never buy back...",
+    message: "Time is something we can never buy back. That is why a little piece of someone's time can mean so much.",
+    accent: "#D97706",
+    bg: "#FFFBEB"
+  },
+  {
+    id: 5,
+    tag: "People & Connection",
+    title: "The Feeling Carried",
+    peek: "A meaningful gift is not about who it is 'for'...",
+    message: "A meaningful gift is not about who it is 'for'. It is about the feeling you want someone to carry.",
+    accent: "#10B981",
+    bg: "#ECFDF5"
+  },
+  {
+    id: 6,
+    tag: "For Everyone Dear",
+    title: "Bridging Hearts",
+    peek: "Whether for a best friend, sibling, or mentor...",
+    message: "Whether for a best friend, sibling, colleague, or mentor — thoughtful gifts bridge hearts across any distance.",
+    accent: "#6366F1",
+    bg: "#EEF2FF"
+  },
+  {
+    id: 7,
+    tag: "DearThreado Purpose",
+    title: "Wrapped in Love",
+    peek: "A little piece of my time, wrapped in love...",
+    message: "A little piece of my time, wrapped in love. DearThreado exists to turn simple moments into lasting memories.",
+    accent: "#4C1D95",
+    bg: "#FAF8FF"
+  }
+];
 
 const Home = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [openEnvelopeId, setOpenEnvelopeId] = useState(1);
   const scrollRef = useRef(null);
+  const storyScrollRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -168,6 +236,98 @@ const Home = () => {
               ))}
             </div>
           )}
+        </div>
+      </section>
+
+      {/* NEW MODIFICATION 1: DEARTHREADO EMOTIONAL STORY SECTION (Envelopes + Hidden Cards) */}
+      <section className="py-5 my-2 position-relative overflow-hidden" style={{ backgroundColor: '#FAF8FF', borderTop: '1px solid #EDE9FE', borderBottom: '1px solid #EDE9FE' }}>
+        <div className="container position-relative" style={{ zIndex: 2 }}>
+          <div className="text-center mb-4 max-w-700 mx-auto">
+            <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2 border small fw-bold" style={{ backgroundColor: '#ffffff', borderColor: '#DDD6FE', color: '#7C3AED' }}>
+              <Mail size={15} /> Letters of Meaning
+            </div>
+            <h2 className="fw-extrabold text-dark mb-2">The Heart Behind DearThreado</h2>
+            <p className="text-muted small mb-0">
+              Tap any envelope to open a little letter about why handmade gifts matter & how effort connects hearts.
+            </p>
+          </div>
+
+          {/* Interactive Envelope Sequence Carousel */}
+          <div 
+            ref={storyScrollRef}
+            className="d-flex gap-4 overflow-x-auto py-4 px-2 no-scrollbar align-items-start"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {emotionalMessages.map((item) => {
+              const isOpen = openEnvelopeId === item.id;
+              return (
+                <div 
+                  key={item.id} 
+                  onClick={() => setOpenEnvelopeId(isOpen ? null : item.id)}
+                  className="cursor-pointer select-none transition-all"
+                  style={{ 
+                    flex: '0 0 310px', 
+                    minWidth: '310px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <div 
+                    className="rounded-4 p-4 position-relative shadow-sm transition-all border"
+                    style={{ 
+                      backgroundColor: isOpen ? '#ffffff' : item.bg, 
+                      borderColor: isOpen ? item.accent : '#EDE9FE',
+                      minHeight: '260px',
+                      transform: isOpen ? 'translateY(-4px)' : 'translateY(0)',
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                    }}
+                  >
+                    {/* Envelope Flap Header */}
+                    <div className="d-flex align-items-center justify-content-between mb-3">
+                      <span className="badge rounded-pill fw-bold text-uppercase" style={{ backgroundColor: '#ffffff', color: item.accent, border: `1px solid ${item.accent}33`, fontSize: '0.7rem' }}>
+                        {item.tag}
+                      </span>
+                      <div className="d-flex align-items-center gap-1">
+                        {isOpen ? <MailOpen size={18} color={item.accent} /> : <Mail size={18} color={item.accent} />}
+                        <Heart size={14} fill={item.accent} color={item.accent} />
+                      </div>
+                    </div>
+
+                    {/* Envelope Content: Closed Peek vs Open Revealed Card */}
+                    <h5 className="fw-bold mb-2 text-dark">{item.title}</h5>
+
+                    {!isOpen ? (
+                      <div>
+                        <p className="text-muted small mb-3 fst-italic line-clamp-2">
+                          "{item.peek}"
+                        </p>
+                        <div className="p-2.5 rounded-3 text-center border border-dashed bg-white small fw-semibold" style={{ color: item.accent, borderColor: item.accent }}>
+                          ✨ Tap to open letter
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="p-3 rounded-3 bg-white border shadow-sm animate-fadeIn" style={{ borderColor: `${item.accent}44` }}>
+                        <p className="font-editorial fst-italic mb-0 text-dark" style={{ fontSize: '1.02rem', lineHeight: '1.5' }}>
+                          "{item.message}"
+                        </p>
+                        <div className="text-end mt-2">
+                          <span className="small text-muted fw-bold" style={{ fontSize: '0.75rem', color: item.accent }}>
+                            &mdash; DearThreado Thoughts
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Connected Purple Thread Visual */}
+          <div className="text-center mt-3">
+            <span className="small text-muted fw-medium d-inline-flex align-items-center gap-2">
+              <Heart size={13} fill="#7C3AED" color="#7C3AED" /> Swipe to discover more letters
+            </span>
+          </div>
         </div>
       </section>
 
