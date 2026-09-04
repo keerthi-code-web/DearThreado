@@ -143,6 +143,7 @@ async function initDb() {
         shipping_state VARCHAR(100) NOT NULL,
         shipping_zip VARCHAR(20) NOT NULL,
         requested_delivery_date DATE NOT NULL,
+        actual_delivery_date DATE NULL,
         status VARCHAR(50) DEFAULT 'Placed',
         payment_method VARCHAR(50) DEFAULT 'COD',
         payment_status VARCHAR(50) DEFAULT 'Pending',
@@ -153,6 +154,12 @@ async function initDb() {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
       );
     `);
+
+    try {
+      await query('ALTER TABLE orders ADD COLUMN actual_delivery_date DATE NULL;');
+    } catch (e) {
+      // Column already exists
+    }
 
     // 10. Order Items table
     await query(`

@@ -21,12 +21,14 @@ const Navbar = () => {
         {/* Brand Logo */}
         <Link className="navbar-brand d-flex align-items-center gap-2" to="/">
           <img 
-            src="/logo/logo with name.png" 
+            src="/logo/logo.png" 
             alt="DearThreado" 
-            height="44" 
+            height="42" 
             className="d-inline-block align-top"
-            onError={(e) => { e.target.onerror = null; e.target.src = '/logo/logo.png'; }}
           />
+          <span className="fw-extrabold fs-4 font-editorial" style={{ color: '#4C1D95', letterSpacing: '-0.5px' }}>
+            DearThreado
+          </span>
         </Link>
 
         {/* Mobile Toggle Button */}

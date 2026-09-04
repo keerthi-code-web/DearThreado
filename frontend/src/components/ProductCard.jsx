@@ -28,20 +28,17 @@ const ProductCard = ({ product }) => {
       <div className="p-4 d-flex flex-column flex-grow-1 justify-content-between">
         <div>
           <div className="text-uppercase small fw-semibold text-muted mb-1" style={{ letterSpacing: '0.5px' }}>
-            {product.subcategory_name || product.category_name || 'Handmade'}
+            {product.subcategory_name || product.category_name}
           </div>
-          <h5 className="fw-bold mb-2 text-dark line-clamp-2">
+          <h5 className="fw-bold mb-3 text-dark line-clamp-2">
             {product.name}
           </h5>
-          <p className="text-muted small line-clamp-2 mb-3">
-            {product.description}
-          </p>
         </div>
 
-        <div>
-          <div className="d-flex align-items-center justify-content-between pt-2 border-top">
+        <div className="mt-auto pt-2 border-top">
+          <div className="d-flex align-items-center justify-content-between">
             <span className="fs-5 fw-bold" style={{ color: '#7C3AED' }}>
-              ${parseFloat(product.price).toFixed(2)}
+              ₹{parseFloat(product.price).toFixed(2)}
             </span>
             <Link 
               to={`/product/${product.slug}`} 

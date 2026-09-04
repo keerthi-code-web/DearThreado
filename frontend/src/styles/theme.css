@@ -137,3 +137,15 @@ h1, h2, h3, h4, .font-display {
 .pulse-badge {
   animation: pulse-ring 2s infinite ease-in-out;
 }
+
+/* Subtle Threado Hero Logo Float Animation */
+@keyframes threado-float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0px); }
+}
+
+.hero-logo-float {
+  animation: threado-float 6s ease-in-out infinite;
+}
+

@@ -76,7 +76,7 @@ exports.createOrder = async (req, res) => {
     await query(`
       INSERT INTO notifications (user_id, title, message, type, target_id)
       VALUES (NULL, 'New Order Placed', ?, 'order_status', ?)
-    `, [`Order #${orderNumber} for $${serverTotalAmount.toFixed(2)} was placed by ${customer_name}.`, orderId]);
+    `, [`Order #${orderNumber} for ₹${serverTotalAmount.toFixed(2)} was placed by ${customer_name}.`, orderId]);
 
     // Create Customer Notification
     await query(`
@@ -247,11 +247,19 @@ exports.updateOrderStatus = async (req, res) => {
       });
     }
 
+    let actualDateUpdate = '';
+    const params = [status];
+    if (status === 'Delivered' && !order.actual_delivery_date) {
+      actualDateUpdate = ', actual_delivery_date = ?';
+      params.push(new Date().toISOString().split('T')[0]);
+    }
+    params.push(id);
+
     await query(`
       UPDATE orders
-      SET status = ?, updated_at = CURRENT_TIMESTAMP
+      SET status = ?${actualDateUpdate}, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
-    `, [status, id]);
+    `, params);
 
     // Customer Notification
     await query(`
@@ -263,6 +271,28 @@ exports.updateOrderStatus = async (req, res) => {
   } catch (err) {
     console.error('Update Order Status Error:', err);
     res.status(500).json({ success: false, message: 'Server error updating order status.' });
+  }
+};
+
+exports.updateActualDeliveryDate = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { actual_delivery_date } = req.body;
+
+    if (!actual_delivery_date) {
+      return res.status(400).json({ success: false, message: 'Actual delivery date is required.' });
+    }
+
+    await query(`
+      UPDATE orders
+      SET actual_delivery_date = ?, updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `, [actual_delivery_date, id]);
+
+    res.json({ success: true, message: 'Actual delivery date updated successfully.' });
+  } catch (err) {
+    console.error('Update Actual Delivery Date Error:', err);
+    res.status(500).json({ success: false, message: 'Server error updating actual delivery date.' });
   }
 };
 

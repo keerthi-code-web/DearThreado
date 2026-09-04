@@ -55,6 +55,7 @@ const AdminLogin = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="admin@dearthreado.com"
+              autoComplete="username email"
               required 
             />
           </div>
@@ -67,6 +68,7 @@ const AdminLogin = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
+              autoComplete="current-password"
               required 
             />
           </div>

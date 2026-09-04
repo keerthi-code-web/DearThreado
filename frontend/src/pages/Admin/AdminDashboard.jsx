@@ -61,7 +61,7 @@ const AdminDashboard = () => {
         <div className="col-6 col-md-3">
           <div className="dt-card p-3 border-start border-4 border-purple">
             <div className="text-muted small">Total Revenue</div>
-            <div className="fs-4 fw-bold text-dark">${stats.total_revenue?.toFixed(2) || '0.00'}</div>
+            <div className="fs-4 fw-bold text-dark">₹{stats.total_revenue?.toFixed(2) || '0.00'}</div>
           </div>
         </div>
 
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
                     <tr key={ord.id}>
                       <td className="fw-bold">{ord.order_number}</td>
                       <td>{ord.customer_name}</td>
-                      <td className="fw-bold">${parseFloat(ord.total_amount).toFixed(2)}</td>
+                      <td className="fw-bold">₹{parseFloat(ord.total_amount).toFixed(2)}</td>
                       <td><StatusBadge status={ord.status} /></td>
                       <td>
                         <Link to="/admin/orders" className="btn btn-sm btn-light">Manage</Link>

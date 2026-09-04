@@ -65,6 +65,7 @@ const Checkout = () => {
       });
 
       if (res.data.success) {
+        await clearCart();
         navigate(`/order-confirmation/${res.data.order.id}`, { state: { order: res.data.order } });
       }
     } catch (err) {
@@ -220,7 +221,7 @@ const Checkout = () => {
                           <div className="small text-muted fst-italic">Customized</div>
                         )}
                       </div>
-                      <div className="fw-bold small text-dark">${(parseFloat(item.unit_price) * item.quantity).toFixed(2)}</div>
+                      <div className="fw-bold small text-dark">₹{(parseFloat(item.unit_price) * item.quantity).toFixed(2)}</div>
                     </div>
                   ))}
                 </div>
@@ -236,7 +237,7 @@ const Checkout = () => {
 
                 <div className="d-flex justify-content-between fs-5 fw-extrabold text-dark my-3">
                   <span>Total Amount:</span>
-                  <span style={{ color: '#7C3AED' }}>${cartTotal.toFixed(2)}</span>
+                  <span style={{ color: '#7C3AED' }}>₹{cartTotal.toFixed(2)}</span>
                 </div>
 
                 <button 

@@ -49,7 +49,7 @@ const OrderConfirmation = () => {
             </div>
             <div className="d-flex justify-content-between mb-2">
               <span className="text-muted">Total Amount:</span>
-              <span className="fw-bold text-purple-primary" style={{ color: '#7C3AED' }}>${parseFloat(order.total_amount).toFixed(2)}</span>
+              <span className="fw-bold text-purple-primary" style={{ color: '#7C3AED' }}>₹{parseFloat(order.total_amount).toFixed(2)}</span>
             </div>
             <div className="d-flex justify-content-between mb-2">
               <span className="text-muted">Payment Method:</span>

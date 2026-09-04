@@ -274,6 +274,10 @@ const AdminCategories = () => {
                     <label className="form-label small fw-semibold">Description</label>
                     <textarea className="form-control rounded-3" rows="2" value={subForm.description} onChange={(e) => setSubForm({ ...subForm, description: e.target.value })}></textarea>
                   </div>
+                  <div className="mb-3">
+                    <label className="form-label small fw-semibold">Image URL</label>
+                    <input type="text" className="form-control rounded-3" value={subForm.image_url} onChange={(e) => setSubForm({ ...subForm, image_url: e.target.value })} />
+                  </div>
                 </div>
                 <div className="modal-footer border-0">
                   <button type="button" className="btn btn-light" onClick={() => setShowSubcategoryModal(false)}>Cancel</button>

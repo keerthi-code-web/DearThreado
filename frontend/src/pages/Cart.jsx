@@ -60,7 +60,7 @@ const Cart = () => {
                   <div className="col-9 col-md-5">
                     <h6 className="fw-bold text-dark mb-1">{item.product_name}</h6>
                     <div className="text-purple-primary fw-semibold small mb-2" style={{ color: '#7C3AED' }}>
-                      ${parseFloat(item.unit_price).toFixed(2)} each
+                      ₹{parseFloat(item.unit_price).toFixed(2)} each
                     </div>
 
                     {/* Preserved Customization Values */}
@@ -94,7 +94,7 @@ const Cart = () => {
 
                   <div className="col-6 col-md-2 text-end">
                     <div className="fw-bold fs-6 text-dark mb-2">
-                      ${(parseFloat(item.unit_price) * item.quantity).toFixed(2)}
+                      ₹{(parseFloat(item.unit_price) * item.quantity).toFixed(2)}
                     </div>
                     <button 
                       onClick={() => removeItem(item.id)}
@@ -126,7 +126,7 @@ const Cart = () => {
 
             <div className="d-flex justify-content-between mb-2">
               <span className="text-muted">Subtotal</span>
-              <span className="fw-bold text-dark">${cartTotal.toFixed(2)}</span>
+              <span className="fw-bold text-dark">₹{cartTotal.toFixed(2)}</span>
             </div>
             <div className="d-flex justify-content-between mb-2">
               <span className="text-muted">Payment Method</span>
@@ -141,7 +141,7 @@ const Cart = () => {
 
             <div className="d-flex justify-content-between mb-4">
               <span className="fw-bold text-dark fs-5">Total</span>
-              <span className="fw-extrabold fs-4" style={{ color: '#7C3AED' }}>${cartTotal.toFixed(2)}</span>
+              <span className="fw-extrabold fs-4" style={{ color: '#7C3AED' }}>₹{cartTotal.toFixed(2)}</span>
             </div>
 
             <button 

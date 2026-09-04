@@ -91,6 +91,17 @@ const AdminOrders = () => {
     }
   };
 
+  const handleUpdateActualDeliveryDate = async (orderId, dateStr) => {
+    try {
+      const res = await api.put(`/orders/${orderId}/actual-delivery-date`, { actual_delivery_date: dateStr });
+      if (res.data.success) {
+        fetchOrders();
+      }
+    } catch (err) {
+      alert('Failed to update actual delivery date.');
+    }
+  };
+
   if (loading) {
     return (
       <div className="container py-5 text-center">
@@ -130,7 +141,8 @@ const AdminOrders = () => {
               <tr>
                 <th>Order #</th>
                 <th>Customer</th>
-                <th>Delivery Date</th>
+                <th>Requested Date</th>
+                <th>Actual Date</th>
                 <th>Total</th>
                 <th>Payment</th>
                 <th>Status</th>
@@ -147,7 +159,16 @@ const AdminOrders = () => {
                     <div className="text-muted">{ord.customer_phone}</div>
                   </td>
                   <td>{new Date(ord.requested_delivery_date).toLocaleDateString()}</td>
-                  <td className="fw-bold" style={{ color: '#7C3AED' }}>${parseFloat(ord.total_amount).toFixed(2)}</td>
+                  <td>
+                    <input 
+                      type="date"
+                      className="form-control form-control-sm rounded-2"
+                      style={{ width: '130px' }}
+                      value={ord.actual_delivery_date ? ord.actual_delivery_date.split('T')[0] : ''}
+                      onChange={(e) => handleUpdateActualDeliveryDate(ord.id, e.target.value)}
+                    />
+                  </td>
+                  <td className="fw-bold" style={{ color: '#7C3AED' }}>₹{parseFloat(ord.total_amount).toFixed(2)}</td>
                   <td>
                     <select
                       className="form-select form-select-sm rounded-2"
@@ -214,6 +235,18 @@ const AdminOrders = () => {
                     <h6 className="fw-bold text-dark mb-1">Shipping Address</h6>
                     <div className="small text-muted">{selectedOrder.shipping_street}, {selectedOrder.shipping_city}, {selectedOrder.shipping_state} - {selectedOrder.shipping_zip}</div>
                   </div>
+
+                  <div className="col-md-6">
+                    <h6 className="fw-bold text-dark mb-1">Requested Delivery Date</h6>
+                    <div className="small text-dark fw-bold">{new Date(selectedOrder.requested_delivery_date).toLocaleDateString()}</div>
+                  </div>
+
+                  <div className="col-md-6">
+                    <h6 className="fw-bold text-dark mb-1">Actual Delivery Date</h6>
+                    <div className="small text-success fw-bold">
+                      {selectedOrder.actual_delivery_date ? new Date(selectedOrder.actual_delivery_date).toLocaleDateString() : 'Not Delivered Yet'}
+                    </div>
+                  </div>
                 </div>
 
                 <h6 className="fw-bold text-dark mb-2">Items & Customization Snapshots</h6>
@@ -228,7 +261,7 @@ const AdminOrders = () => {
                           </div>
                         )}
                       </div>
-                      <div className="fw-bold small">${parseFloat(item.subtotal).toFixed(2)}</div>
+                      <div className="fw-bold small">₹{parseFloat(item.subtotal).toFixed(2)}</div>
                     </div>
                   ))}
                 </div>

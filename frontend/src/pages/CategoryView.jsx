@@ -11,6 +11,7 @@ const CategoryView = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchCategory = async () => {
       try {
         setLoading(true);

@@ -10,6 +10,7 @@ router.get('/:id', authenticateToken, orderController.getOrderById);
 router.post('/:id/cancel', authenticateToken, orderController.cancelMyOrder);
 router.put('/:id/status', authenticateToken, requireAdmin, orderController.updateOrderStatus);
 router.put('/:id/payment', authenticateToken, requireAdmin, orderController.updatePaymentStatus);
+router.put('/:id/actual-delivery-date', authenticateToken, requireAdmin, orderController.updateActualDeliveryDate);
 router.post('/:id/admin-cancel', authenticateToken, requireAdmin, orderController.adminCancelOrder);
 
 module.exports = router;

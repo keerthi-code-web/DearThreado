@@ -184,7 +184,7 @@ const OrderDetail = () => {
                     />
                     <div>
                       <h6 className="fw-bold text-dark mb-1">{item.product_name}</h6>
-                      <div className="small text-muted">${parseFloat(item.product_price).toFixed(2)} x {item.quantity}</div>
+                      <div className="small text-muted">₹{parseFloat(item.product_price).toFixed(2)} x {item.quantity}</div>
 
                       {item.customization_values && Object.keys(item.customization_values).length > 0 && (
                         <div className="p-2 rounded bg-light small mt-2 border text-muted">
@@ -198,7 +198,7 @@ const OrderDetail = () => {
                   </div>
 
                   <div className="text-sm-end">
-                    <div className="fw-bold text-dark mb-2">${parseFloat(item.subtotal).toFixed(2)}</div>
+                    <div className="fw-bold text-dark mb-2">₹{parseFloat(item.subtotal).toFixed(2)}</div>
                     {isDelivered && (
                       <button 
                         onClick={() => setReviewProduct(item)}
@@ -230,9 +230,17 @@ const OrderDetail = () => {
             <hr />
 
             <div className="small text-muted mb-1 d-flex justify-content-between">
-              <span>Requested Delivery:</span>
+              <span>Requested Delivery Date:</span>
               <span className="fw-bold text-dark">{new Date(order.requested_delivery_date).toLocaleDateString()}</span>
             </div>
+
+            {order.actual_delivery_date && (
+              <div className="small text-muted mb-1 d-flex justify-content-between">
+                <span>Actual Delivery Date:</span>
+                <span className="fw-bold text-success">{new Date(order.actual_delivery_date).toLocaleDateString()}</span>
+              </div>
+            )}
+
             <div className="small text-muted d-flex justify-content-between">
               <span>Payment Method:</span>
               <span className="fw-bold text-dark">COD ({order.payment_status})</span>

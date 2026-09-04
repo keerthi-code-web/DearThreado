@@ -54,13 +54,16 @@ const MyOrders = () => {
                 </div>
 
                 <div className="col-md-3">
-                  <div className="small text-muted">Delivery Address</div>
-                  <div className="fw-medium small text-dark text-truncate">{order.shipping_city}, {order.shipping_state}</div>
+                  <div className="small text-muted">Delivery Dates</div>
+                  <div className="fw-medium small text-dark">Req: {new Date(order.requested_delivery_date).toLocaleDateString()}</div>
+                  {order.actual_delivery_date && (
+                    <div className="small text-success fw-bold">Delivered: {new Date(order.actual_delivery_date).toLocaleDateString()}</div>
+                  )}
                 </div>
 
                 <div className="col-6 col-md-2">
                   <div className="small text-muted">Total Amount</div>
-                  <div className="fw-bold" style={{ color: '#7C3AED' }}>${parseFloat(order.total_amount).toFixed(2)}</div>
+                  <div className="fw-bold" style={{ color: '#7C3AED' }}>₹{parseFloat(order.total_amount).toFixed(2)}</div>
                 </div>
 
                 <div className="col-6 col-md-2">

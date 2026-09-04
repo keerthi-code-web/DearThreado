@@ -31,28 +31,44 @@ const Home = () => {
   return (
     <div className="pb-5">
       {/* Hero Section */}
-      <section className="py-5 text-center position-relative overflow-hidden" style={{ backgroundColor: '#FAF8FF' }}>
+      <section className="py-5 position-relative overflow-hidden" style={{ backgroundColor: '#FAF8FF' }}>
         <div className="container py-4 position-relative" style={{ zIndex: 2 }}>
-          <div className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-3 border" style={{ backgroundColor: '#ffffff', borderColor: '#DDD6FE', color: '#7C3AED' }}>
-            <Sparkles size={16} />
-            <span className="small fw-bold">Handmade-First Gifting</span>
-          </div>
+          <div className="row align-items-center g-4">
+            <div className="col-lg-7 text-start">
+              <div className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-3 border" style={{ backgroundColor: '#ffffff', borderColor: '#DDD6FE', color: '#7C3AED' }}>
+                <Sparkles size={16} />
+                <span className="small fw-bold">Handmade-First Gifting</span>
+              </div>
 
-          <h1 className="display-4 fw-extrabold mb-3 text-dark max-w-700 mx-auto" style={{ letterSpacing: '-0.5px' }}>
-            Make every moment a little more special.
-          </h1>
+              <h1 className="display-4 fw-extrabold mb-3 text-dark" style={{ letterSpacing: '-0.5px' }}>
+                Make every moment a little more special.
+              </h1>
 
-          <p className="lead text-muted mb-4 mx-auto" style={{ maxWidth: '640px', fontSize: '1.15rem' }}>
-            A beautiful little place where you find something made meaningful for someone you care about.
-          </p>
+              <p className="lead text-muted mb-4" style={{ fontSize: '1.15rem', maxWidth: '580px' }}>
+                A beautiful little place where you find something made meaningful for someone you care about.
+              </p>
 
-          <div className="d-flex flex-column flex-sm-row justify-content-center align-items-center gap-3">
-            <a href="#categories" className="btn-dt-primary fs-6 px-4 py-3">
-              Explore Gifts <ArrowRight size={18} />
-            </a>
-            <Link to="/request-gift" className="btn-dt-secondary fs-6 px-4 py-3">
-              <MessageCircleHeart size={18} /> Can't find what you're imagining?
-            </Link>
+              <div className="d-flex flex-column flex-sm-row justify-content-start align-items-sm-center gap-3">
+                <a href="#categories" className="btn-dt-primary fs-6 px-4 py-3">
+                  Explore Gifts <ArrowRight size={18} />
+                </a>
+                <Link to="/request-gift" className="btn-dt-secondary fs-6 px-4 py-3">
+                  <MessageCircleHeart size={18} /> Can't find what you're imagining?
+                </Link>
+              </div>
+            </div>
+
+            <div className="col-lg-5 text-center position-relative">
+              <div className="p-4 rounded-4 hero-logo-float bg-white shadow-sm border" style={{ borderColor: '#EDE9FE' }}>
+                <img 
+                  src="/logo/logo with name.png" 
+                  alt="DearThreado" 
+                  className="img-fluid"
+                  style={{ maxHeight: '240px', objectFit: 'contain' }}
+                  onError={(e) => { e.target.onerror = null; e.target.src = '/logo/logo.png'; }}
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -63,7 +79,10 @@ const Home = () => {
       <section id="categories" className="py-4">
         <div className="container">
           <div className="text-center mb-4">
-            <h2 className="fw-bold text-dark mb-1">Handmade Categories</h2>
+            <span className="fst-italic text-purple-primary small fw-semibold d-block mb-1" style={{ color: '#7C3AED' }}>
+              "A little piece of my time, wrapped in love."
+            </span>
+            <h2 className="fw-bold text-dark mb-1">Handmade Discovery Collections</h2>
             <p className="text-muted small">Explore gift collections crafted with heart</p>
           </div>
 

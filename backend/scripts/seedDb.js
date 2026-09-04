@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const { query } = require('../config/db');
 
 async function seedDb() {
-  console.log('🌱 Seeding DearThreado Database...');
+  console.log('🌱 Seeding DearThreado Database with Finalized Categories & Products...');
 
   try {
     // 1. Seed Users (Admin + Test Customer)
@@ -29,109 +29,71 @@ async function seedDb() {
       `, ['Sophia Bennett', customerEmail, customerPasswordHash, '+1-555-0192', '742 Threado Craft Lane', 'Portland', 'OR', '97201']);
     }
 
-    // 2. Seed Categories
+    // 2. Clear old categories and seed 4 locked categories
+    await query('DELETE FROM customization_fields');
+    await query('DELETE FROM product_images');
+    await query('DELETE FROM products');
+    await query('DELETE FROM subcategories');
+    await query('DELETE FROM categories');
+
     const categoriesData = [
       {
-        name: 'Handmade Floral Gifts',
-        slug: 'floral-gifts',
-        description: 'Everlasting dried & preserved floral arrangements lovingly crafted into memory pieces.',
+        name: 'Floral',
+        slug: 'floral',
+        description: 'Everlasting dried & preserved floral arrangements, flower frames, and floral hoops.',
         image_url: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=600&q=80'
       },
       {
-        name: 'Handmade Cards & Letters',
-        slug: 'cards-and-letters',
-        description: 'Intricately designed pop-up letters, thread-stitched greetings, and memory explosion boxes.',
+        name: 'Pipecleaner',
+        slug: 'pipecleaner',
+        description: 'Creative hand-twisted pipe cleaner flowers, cute animal characters, and decorative pieces.',
         image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80'
       },
       {
-        name: 'Personalized Keepsakes & Frames',
-        slug: 'keepsakes-and-frames',
-        description: 'Custom hand-embroidered hoops, wooden memory frames, and personalized photo gifts.',
+        name: 'Paper Craft',
+        slug: 'paper-craft',
+        description: 'Intricately designed pop-up cards, memory scrapbooks, paper flowers, and paper decor.',
         image_url: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80'
       },
       {
-        name: 'Customized Accessories & Crafts',
-        slug: 'accessories-and-crafts',
-        description: 'Handmade thread keychains, personalized fabric journals, and customized gifts.',
+        name: 'Photo Related Products',
+        slug: 'photo-related-products',
+        description: 'Custom wooden photo frames, personalized photo greeting cards, memory books, and photo strips.',
         image_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80'
       }
     ];
 
     const catIdMap = {};
     for (const cat of categoriesData) {
-      const existing = await query('SELECT id FROM categories WHERE slug = ?', [cat.slug]);
-      let catId;
-      if (existing.length === 0) {
-        const res = await query(`
-          INSERT INTO categories (name, slug, description, image_url)
-          VALUES (?, ?, ?, ?)
-        `, [cat.name, cat.slug, cat.description, cat.image_url]);
-        catId = res.insertId;
-      } else {
-        catId = existing[0].id;
-        await query('UPDATE categories SET name=?, description=?, image_url=? WHERE id=?', [cat.name, cat.description, cat.image_url, catId]);
-      }
-      catIdMap[cat.slug] = catId;
+      const res = await query(`
+        INSERT INTO categories (name, slug, description, image_url)
+        VALUES (?, ?, ?, ?)
+      `, [cat.name, cat.slug, cat.description, cat.image_url]);
+      catIdMap[cat.slug] = res.insertId;
     }
 
     // 3. Seed Subcategories
     const subcategoriesData = [
-      {
-        catSlug: 'floral-gifts',
-        name: 'Dried Flower Bouquets',
-        slug: 'dried-flower-bouquets',
-        description: 'Handpicked dried floral blooms tied with organic linen thread.',
-        image_url: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=600&q=80'
-      },
-      {
-        catSlug: 'floral-gifts',
-        name: 'Preserved Flower Frames',
-        slug: 'preserved-flower-frames',
-        description: 'Real pressed flowers mounted inside glass floating frames with custom calligraphy.',
-        image_url: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=600&q=80'
-      },
-      {
-        catSlug: 'cards-and-letters',
-        name: 'Explosion Box Cards',
-        slug: 'explosion-box-cards',
-        description: 'Multi-layered surprise explosion boxes with hidden message pockets and photos.',
-        image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80'
-      },
-      {
-        catSlug: 'cards-and-letters',
-        name: 'Pop-up Love Letters',
-        slug: 'pop-up-love-letters',
-        description: 'Hand-folded 3D pop-up greeting cards wrapped in silk thread.',
-        image_url: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80'
-      },
-      {
-        catSlug: 'keepsakes-and-frames',
-        name: 'Custom Embroidery Hoops',
-        slug: 'custom-embroidery-hoops',
-        description: 'Hand-stitched thread art hoops personalized with names, dates, or floral borders.',
-        image_url: 'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=600&q=80'
-      },
-      {
-        catSlug: 'keepsakes-and-frames',
-        name: 'Memory Photo Frames',
-        slug: 'memory-photo-frames',
-        description: 'Custom wooden photo frames enhanced with handmade clay or string details.',
-        image_url: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80'
-      },
-      {
-        catSlug: 'accessories-and-crafts',
-        name: 'Thread & Leather Keychains',
-        slug: 'thread-leather-keychains',
-        description: 'Handwoven thread tassels and personalized initial keychains.',
-        image_url: 'https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=600&q=80'
-      },
-      {
-        catSlug: 'accessories-and-crafts',
-        name: 'Handmade Fabric Journals',
-        slug: 'handmade-fabric-journals',
-        description: 'Hand-bound diary notebooks covered in lavender thread-embroidered fabric.',
-        image_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80'
-      }
+      // Floral
+      { catSlug: 'floral', name: 'Flower Bouquets', slug: 'flower-bouquets', description: 'Hand-crafted preserved floral bouquets tied with organic thread.', image_url: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=600&q=80' },
+      { catSlug: 'floral', name: 'Flower Frames', slug: 'flower-frames', description: 'Real pressed flowers mounted inside glass floating frames.', image_url: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=600&q=80' },
+      { catSlug: 'floral', name: 'Floral Decor', slug: 'floral-decor', description: 'Handmade floral hoops and hanging room ornaments.', image_url: 'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=600&q=80' },
+
+      // Pipecleaner
+      { catSlug: 'pipecleaner', name: 'Pipe Cleaner Flowers', slug: 'pipe-cleaner-flowers', description: 'Colorful hand-sculpted pipe cleaner flower stems.', image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80' },
+      { catSlug: 'pipecleaner', name: 'Pipe Cleaner Characters', slug: 'pipe-cleaner-characters', description: 'Cute handcrafted animals, teddy bears, and butterflies.', image_url: 'https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=600&q=80' },
+      { catSlug: 'pipecleaner', name: 'Pipe Cleaner Decor', slug: 'pipe-cleaner-decor', description: 'Playful desktop figurines and flower pot decor.', image_url: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80' },
+
+      // Paper Craft
+      { catSlug: 'paper-craft', name: 'Handmade Cards', slug: 'handmade-cards', description: 'Intricate pop-up and stitched greeting cards.', image_url: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=600&q=80' },
+      { catSlug: 'paper-craft', name: 'Scrapbooks', slug: 'scrapbooks', description: 'Personalized mini memory scrapbooks with photo pockets.', image_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80' },
+      { catSlug: 'paper-craft', name: 'Paper Flowers', slug: 'paper-flowers', description: 'Crepe and origami paper floral blooms.', image_url: 'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=600&q=80' },
+      { catSlug: 'paper-craft', name: 'Paper Decor', slug: 'paper-decor', description: 'Hand-cut paper wall banners and desktop frames.', image_url: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80' },
+
+      // Photo Related Products
+      { catSlug: 'photo-related-products', name: 'Photo Frames', slug: 'photo-frames', description: 'Custom wooden photo frames enhanced with hand craft details.', image_url: 'https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=600&q=80' },
+      { catSlug: 'photo-related-products', name: 'Photo Cards', slug: 'photo-cards', description: 'Handcrafted greeting cards with integrated photo slots.', image_url: 'https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=600&q=80' },
+      { catSlug: 'photo-related-products', name: 'Photo Gifts', slug: 'photo-gifts', description: 'Custom photo strips, photo cubes, and keepsake albums.', image_url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80' }
     ];
 
     const subIdMap = {};
@@ -139,179 +101,288 @@ async function seedDb() {
       const catId = catIdMap[sub.catSlug];
       if (!catId) continue;
 
-      const existing = await query('SELECT id FROM subcategories WHERE slug = ?', [sub.slug]);
-      let subId;
-      if (existing.length === 0) {
-        const res = await query(`
-          INSERT INTO subcategories (category_id, name, slug, description, image_url)
-          VALUES (?, ?, ?, ?, ?)
-        `, [catId, sub.name, sub.slug, sub.description, sub.image_url]);
-        subId = res.insertId;
-      } else {
-        subId = existing[0].id;
-        await query('UPDATE subcategories SET category_id=?, name=?, description=?, image_url=? WHERE id=?', [catId, sub.name, sub.description, sub.image_url, subId]);
-      }
-      subIdMap[sub.slug] = subId;
+      const res = await query(`
+        INSERT INTO subcategories (category_id, name, slug, description, image_url)
+        VALUES (?, ?, ?, ?, ?)
+      `, [catId, sub.name, sub.slug, sub.description, sub.image_url]);
+      subIdMap[sub.slug] = res.insertId;
     }
 
     // 4. Seed Products
     const productsData = [
+      // Floral Products
       {
-        catSlug: 'floral-gifts',
-        subSlug: 'preserved-flower-frames',
-        name: 'Vintage Preserved Floral Glass Frame',
-        slug: 'vintage-preserved-floral-glass-frame',
-        description: 'A delicate floating glass frame encasing hand-pressed wildflowers and soft lavender sprigs. Perfect for anniversaries, birthdays, or milestone keepsakes.',
-        price: 34.99,
+        catSlug: 'floral',
+        subSlug: 'flower-bouquets',
+        name: 'Handmade Rose Bouquet',
+        slug: 'handmade-rose-bouquet',
+        description: 'A charming hand-wrapped arrangement of preserved velvet roses and baby’s breath tied with lavender thread.',
+        price: 899.00,
+        is_available: 1,
+        customization_enabled: 1,
+        size: '12 inches tall',
+        color: 'Soft Pink & Lavender',
+        specifications: 'Real dried roses, eco-friendly linen wrapper, cotton thread bow.',
+        images: ['https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80'],
+        customizations: [
+          { field_label: 'Ribbon Accent Color', field_type: 'dropdown', options: JSON.stringify(['DearThreado Purple', 'Blush Pink', 'Cream White']), is_required: 1 },
+          { field_label: 'Custom Message Tag Text', field_type: 'text', is_required: 0, placeholder: 'e.g. Happy Birthday Maya!' }
+        ]
+      },
+      {
+        catSlug: 'floral',
+        subSlug: 'flower-frames',
+        name: 'Dried Flower Frame',
+        slug: 'dried-flower-frame',
+        description: 'Double-glass floating frame containing pressed wildflowers and hand-lettered calligraphy.',
+        price: 1499.00,
         is_available: 1,
         customization_enabled: 1,
         size: '8x10 inches',
-        color: 'Gold/Lavender',
-        specifications: 'Real dried flora, UV-protected dual glass, antique brass frame, silk hanging ribbon.',
-        images: [
-          'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80',
-          'https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80'
-        ],
+        color: 'Antique Brass & Flora',
+        specifications: 'UV-protected dual glass, brass frame, pressed natural blooms.',
+        images: ['https://images.unsplash.com/photo-1526047932273-341f2a7631f9?auto=format&fit=crop&w=800&q=80'],
         customizations: [
-          {
-            field_label: 'Name or Short Date on Glass',
-            field_type: 'text',
-            is_required: 0,
-            placeholder: 'e.g. Maya & Leo • 12.04.2025'
-          },
-          {
-            field_label: 'Ribbon Accent Color',
-            field_type: 'dropdown',
-            options: JSON.stringify(['DearThreado Purple', 'Blush Pink', 'Warm Cream', 'Golden Amber']),
-            is_required: 1,
-            placeholder: 'Select a ribbon color'
-          },
-          {
-            field_label: 'Custom Photo to Include (Optional)',
-            field_type: 'image_upload',
-            is_required: 0,
-            placeholder: 'Upload your photo'
-          }
+          { field_label: 'Calligraphy Name / Date on Glass', field_type: 'text', is_required: 1, placeholder: 'e.g. Leo & Maya • Est. 2024' }
         ]
       },
       {
-        catSlug: 'cards-and-letters',
-        subSlug: 'explosion-box-cards',
-        name: 'Hand-Crafted Threaded Explosion Card',
-        slug: 'hand-crafted-threaded-explosion-card',
-        description: 'When opened, this multi-layered handmade box unfolds into a stunning 3D memory palace filled with photo slots, pull-out love tags, and thread-stitched hearts.',
-        price: 24.99,
+        catSlug: 'floral',
+        subSlug: 'floral-decor',
+        name: 'Floral Hoop Decor',
+        slug: 'floral-hoop-decor',
+        description: 'Hand-woven wooden embroidery hoop trimmed with dried lavender, eucalyptus, and ribbon.',
+        price: 1199.00,
         is_available: 1,
         customization_enabled: 1,
-        size: '12x12x12 cm (Closed)',
-        color: 'Lavender & Cream',
-        specifications: '300gsm specialty handmade paper, cotton thread binding, 4 hidden secret pockets.',
-        images: [
-          'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80'
-        ],
+        size: '8 inch Hoop',
+        color: 'Natural Wood & Purple',
+        specifications: 'Beechwood hoop, organic dried flora, silk hanging ribbon.',
+        images: ['https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=800&q=80'],
         customizations: [
-          {
-            field_label: 'Personal Message inside Center Box',
-            field_type: 'textarea',
-            is_required: 1,
-            placeholder: 'Write your heartfelt message here...'
-          },
-          {
-            field_label: 'Recipient Name',
-            field_type: 'text',
-            is_required: 1,
-            placeholder: 'e.g. Dearest Anna'
-          }
+          { field_label: 'Monogram Letter in Hoop', field_type: 'text', is_required: 0, placeholder: 'e.g. S' }
         ]
       },
       {
-        catSlug: 'keepsakes-and-frames',
-        subSlug: 'custom-embroidery-hoops',
-        name: 'Custom Embroidered Memory Hoop',
-        slug: 'custom-embroidered-memory-hoop',
-        description: 'Intricately hand-embroidered wooden hoop featuring personalized initials, floral wreath, and thread detailing.',
-        price: 39.99,
+        catSlug: 'floral',
+        subSlug: 'flower-bouquets',
+        name: 'Mini Flower Bouquet',
+        slug: 'mini-flower-bouquet',
+        description: 'Adorable pocket-sized dried flower bouquet ideal for desk gifts and secret notes.',
+        price: 599.00,
+        is_available: 1,
+        customization_enabled: 0,
+        size: '6 inches tall',
+        color: 'Pastel Mixed',
+        specifications: 'Dried lagurus and statice flowers.',
+        images: ['https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80'],
+        customizations: []
+      },
+
+      // Pipecleaner Products
+      {
+        catSlug: 'pipecleaner',
+        subSlug: 'pipe-cleaner-flowers',
+        name: 'Pipe Cleaner Flower Bouquet',
+        slug: 'pipe-cleaner-flower-bouquet',
+        description: 'Hand-bent plush pipe cleaner tulips and daisies in bright everlasting pastels.',
+        price: 799.00,
         is_available: 1,
         customization_enabled: 1,
-        size: '8 inch Wooden Hoop',
-        color: 'Natural Linen / Purple Thread',
-        specifications: 'Organic linen fabric, DMC embroidery thread, natural beechwood hoop.',
-        images: [
-          'https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=800&q=80'
-        ],
+        size: '10 Stems',
+        color: 'Purple & Yellow Tulips',
+        specifications: 'Soft chenille stems, floral tape, kraft paper wrapper.',
+        images: ['https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80'],
         customizations: [
-          {
-            field_label: 'Custom Text / Names / Date',
-            field_type: 'text',
-            is_required: 1,
-            placeholder: 'e.g. The Johnsons • Est. 2024'
-          },
-          {
-            field_label: 'Thread Palette Theme',
-            field_type: 'dropdown',
-            options: JSON.stringify(['DearThreado Purple Palette', 'Blush & Peach Palette', 'Forest & Cream Palette']),
-            is_required: 1
-          },
-          {
-            field_label: 'Special Stitches / Instructions',
-            field_type: 'textarea',
-            is_required: 0,
-            placeholder: 'Any specific requests for flowers or motifs...'
-          }
+          { field_label: 'Flower Palette Theme', field_type: 'dropdown', options: JSON.stringify(['Purple & Cream', 'Pink & White', 'Sunburst Yellow']), is_required: 1 }
         ]
       },
       {
-        catSlug: 'accessories-and-crafts',
-        subSlug: 'thread-leather-keychains',
-        name: 'Woven Thread Initial Keychain',
-        slug: 'woven-thread-initial-keychain',
-        description: 'Charming handmade braided thread tassel paired with a hand-stamped leather initial tag.',
-        price: 12.99,
+        catSlug: 'pipecleaner',
+        subSlug: 'pipe-cleaner-characters',
+        name: 'Handmade Pipe Cleaner Butterfly',
+        slug: 'handmade-pipe-cleaner-butterfly',
+        description: 'Whimsical hand-woven pipe cleaner butterfly bookmark with bead antennae.',
+        price: 399.00,
+        is_available: 1,
+        customization_enabled: 0,
+        size: '4 inches wide',
+        color: 'Lavender & White',
+        specifications: 'Chenille wire, glass beads, metal clip.',
+        images: ['https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=800&q=80'],
+        customizations: []
+      },
+      {
+        catSlug: 'pipecleaner',
+        subSlug: 'pipe-cleaner-characters',
+        name: 'Pipe Cleaner Teddy',
+        slug: 'pipe-cleaner-teddy',
+        description: 'Fluffy handmade teddy bear sculpted out of plush pipe cleaners holding a mini heart.',
+        price: 699.00,
         is_available: 1,
         customization_enabled: 1,
-        size: '4.5 inches length',
-        color: 'Purple Tassel & Tan Leather',
-        specifications: 'Hand-dyed cotton thread, full-grain leather, antique brass clasp.',
-        images: [
-          'https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=800&q=80'
-        ],
+        size: '5 inches tall',
+        color: 'Warm Brown',
+        specifications: 'High-density chenille wire, felt heart, ribbon tie.',
+        images: ['https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&w=800&q=80'],
         customizations: [
-          {
-            field_label: 'Initial Letter (A-Z)',
-            field_type: 'text',
-            is_required: 1,
-            placeholder: 'e.g. K'
-          },
-          {
-            field_label: 'Thread Color Theme',
-            field_type: 'color',
-            is_required: 0,
-            placeholder: '#8B5CF6'
-          }
+          { field_label: 'Heart Color', field_type: 'dropdown', options: JSON.stringify(['DearThreado Purple', 'Red', 'Blush Pink']), is_required: 1 }
         ]
       },
       {
-        catSlug: 'accessories-and-crafts',
-        subSlug: 'handmade-fabric-journals',
-        name: 'Hand-Bound Lavender Thread Journal',
-        slug: 'hand-bound-lavender-thread-journal',
-        description: 'Hand-sewn Coptic stitch journal bound with embroidered lavender linen cover and unlined recycled cotton paper.',
-        price: 28.50,
+        catSlug: 'pipecleaner',
+        subSlug: 'pipe-cleaner-decor',
+        name: 'Mini Pipe Cleaner Floral Decor',
+        slug: 'mini-pipe-cleaner-floral-decor',
+        description: 'Small potted pipe cleaner succulent figurine for office desks.',
+        price: 499.00,
+        is_available: 1,
+        customization_enabled: 0,
+        size: '4 inches height',
+        color: 'Pastel Green & Lavender',
+        specifications: 'Clay pot, chenille wire stems.',
+        images: ['https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80'],
+        customizations: []
+      },
+
+      // Paper Craft Products
+      {
+        catSlug: 'paper-craft',
+        subSlug: 'handmade-cards',
+        name: 'Personalized Handmade Greeting Card',
+        slug: 'personalized-handmade-greeting-card',
+        description: 'Stunning multi-layer handmade greeting card with cotton thread stitching and dried flower accent.',
+        price: 349.00,
         is_available: 1,
         customization_enabled: 1,
-        size: 'A5 (120 pages)',
-        color: 'Soft Lavender',
-        specifications: 'Handmade deckle edge paper, cotton thread binding, bookmark string.',
-        images: [
-          'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80'
-        ],
+        size: 'A5 Card',
+        color: 'Lavender & Kraft',
+        specifications: '300gsm recycled cardstock, silk thread stitching.',
+        images: ['https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80'],
         customizations: [
-          {
-            field_label: 'Embroidered Monogram on Cover',
-            field_type: 'text',
-            is_required: 0,
-            placeholder: 'e.g. S.B.'
-          }
+          { field_label: 'Personal Message Inside', field_type: 'textarea', is_required: 1, placeholder: 'Write your heartfelt message...' },
+          { field_label: 'Recipient Name on Cover', field_type: 'text', is_required: 1, placeholder: 'e.g. Dearest Sarah' }
+        ]
+      },
+      {
+        catSlug: 'paper-craft',
+        subSlug: 'scrapbooks',
+        name: 'Mini Memory Scrapbook',
+        slug: 'mini-memory-scrapbook',
+        description: 'Accordion fold mini scrapbook album with photo corners and secret pull-out message tags.',
+        price: 1299.00,
+        is_available: 1,
+        customization_enabled: 1,
+        size: '6x6 inches (12 pages)',
+        color: 'Blush & Lavender',
+        specifications: 'Hand-bound Coptic stitch, specialty paper, photo pockets.',
+        images: ['https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80'],
+        customizations: [
+          { field_label: 'Title Text on Cover', field_type: 'text', is_required: 1, placeholder: 'e.g. Our Adventures 2024' }
+        ]
+      },
+      {
+        catSlug: 'paper-craft',
+        subSlug: 'paper-flowers',
+        name: 'Handmade Paper Flower Bouquet',
+        slug: 'handmade-paper-flower-bouquet',
+        description: 'Delicate Italian crepe paper peonies and roses wrapped in lace paper.',
+        price: 899.00,
+        is_available: 1,
+        customization_enabled: 0,
+        size: '10 inches tall',
+        color: 'Soft Peach & Purple',
+        specifications: '180g crepe paper, floral wire.',
+        images: ['https://images.unsplash.com/photo-1563241527-3004b7be0ffd?auto=format&fit=crop&w=800&q=80'],
+        customizations: []
+      },
+      {
+        catSlug: 'paper-craft',
+        subSlug: 'paper-decor',
+        name: 'Custom Paper Photo Frame',
+        slug: 'custom-paper-photo-frame',
+        description: 'Layered paper shadowbox frame with 3D paper cut floral border.',
+        price: 699.00,
+        is_available: 1,
+        customization_enabled: 1,
+        size: '7x7 inches',
+        color: 'Cream & Gold',
+        specifications: 'Heavyweight cardstock, acrylic front.',
+        images: ['https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=800&q=80'],
+        customizations: [
+          { field_label: 'Inscribed Name / Short Quote', field_type: 'text', is_required: 0, placeholder: 'e.g. Memories Last Forever' }
+        ]
+      },
+
+      // Photo Related Products
+      {
+        catSlug: 'photo-related-products',
+        subSlug: 'photo-frames',
+        name: 'Personalized Photo Frame',
+        slug: 'personalized-photo-frame',
+        description: 'Hand-carved wooden frame enhanced with string art corner detail and custom photo print.',
+        price: 999.00,
+        is_available: 1,
+        customization_enabled: 1,
+        size: '5x7 inches Photo Size',
+        color: 'Natural Wood & Thread',
+        specifications: 'Solid pine wood, clear glass, cotton string art.',
+        images: ['https://images.unsplash.com/photo-1513542789411-b6a5d4f31634?auto=format&fit=crop&w=800&q=80'],
+        customizations: [
+          { field_label: 'Upload Your Photo', field_type: 'image_upload', is_required: 1 },
+          { field_label: 'Bottom Carved Text', field_type: 'text', is_required: 0, placeholder: 'e.g. Together Always' }
+        ]
+      },
+      {
+        catSlug: 'photo-related-products',
+        subSlug: 'photo-cards',
+        name: 'Custom Photo Greeting Card',
+        slug: 'custom-photo-greeting-card',
+        description: 'Handmade greeting card featuring a polaroid photo holder and string-stitched envelope.',
+        price: 449.00,
+        is_available: 1,
+        customization_enabled: 1,
+        size: 'A5 Folded',
+        color: 'Lavender & White',
+        specifications: '300gsm cardstock, photo slot, twine tie.',
+        images: ['https://images.unsplash.com/photo-1586075010923-2dd4570fb338?auto=format&fit=crop&w=800&q=80'],
+        customizations: [
+          { field_label: 'Upload Photo to Insert', field_type: 'image_upload', is_required: 1 },
+          { field_label: 'Written Note', field_type: 'textarea', is_required: 1, placeholder: 'Write note...' }
+        ]
+      },
+      {
+        catSlug: 'photo-related-products',
+        subSlug: 'photo-gifts',
+        name: 'Mini Photo Memory Book',
+        slug: 'mini-photo-memory-book',
+        description: 'Compact hand-stitched photo booklet holding up to 10 custom printed memory photos.',
+        price: 1199.00,
+        is_available: 1,
+        customization_enabled: 1,
+        size: '4x4 inches',
+        color: 'Soft Purple Fabric',
+        specifications: 'Linen cloth cover, Coptic stitch binding.',
+        images: ['https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80'],
+        customizations: [
+          { field_label: 'Cover Monogram', field_type: 'text', is_required: 1, placeholder: 'e.g. M & L' }
+        ]
+      },
+      {
+        catSlug: 'photo-related-products',
+        subSlug: 'photo-gifts',
+        name: 'Personalized Photo Strips',
+        slug: 'personalized-photo-strips',
+        description: 'Set of 3 vintage photobooth-style handmade photo strips bound with purple twine.',
+        price: 299.00,
+        is_available: 1,
+        customization_enabled: 1,
+        size: '2x6 inches (Set of 3)',
+        color: 'Vintage Black & White / Color',
+        specifications: '260gsm matte photo paper, twine bundle.',
+        images: ['https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80'],
+        customizations: [
+          { field_label: 'Upload 3 Photos', field_type: 'image_upload', is_required: 1 }
         ]
       }
     ];
@@ -321,24 +392,13 @@ async function seedDb() {
       const subId = subIdMap[prod.subSlug];
       if (!catId || !subId) continue;
 
-      const existing = await query('SELECT id FROM products WHERE slug = ?', [prod.slug]);
-      let productId;
-      if (existing.length === 0) {
-        const res = await query(`
-          INSERT INTO products (category_id, subcategory_id, name, slug, description, price, is_available, customization_enabled, size, color, specifications)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `, [catId, subId, prod.name, prod.slug, prod.description, prod.price, prod.is_available, prod.customization_enabled, prod.size, prod.color, prod.specifications]);
-        productId = res.insertId;
-      } else {
-        productId = existing[0].id;
-        await query(`
-          UPDATE products SET category_id=?, subcategory_id=?, name=?, description=?, price=?, is_available=?, customization_enabled=?, size=?, color=?, specifications=?
-          WHERE id=?
-        `, [catId, subId, prod.name, prod.description, prod.price, prod.is_available, prod.customization_enabled, prod.size, prod.color, prod.specifications, productId]);
-      }
+      const res = await query(`
+        INSERT INTO products (category_id, subcategory_id, name, slug, description, price, is_available, customization_enabled, size, color, specifications)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [catId, subId, prod.name, prod.slug, prod.description, prod.price, prod.is_available, prod.customization_enabled, prod.size, prod.color, prod.specifications]);
+      const productId = res.insertId;
 
       // Seed product images
-      await query('DELETE FROM product_images WHERE product_id = ?', [productId]);
       for (let i = 0; i < prod.images.length; i++) {
         await query(`
           INSERT INTO product_images (product_id, image_url, is_primary)
@@ -347,7 +407,6 @@ async function seedDb() {
       }
 
       // Seed customization fields
-      await query('DELETE FROM customization_fields WHERE product_id = ?', [productId]);
       for (const cust of prod.customizations) {
         await query(`
           INSERT INTO customization_fields (product_id, field_label, field_type, options, is_required, placeholder)
@@ -356,7 +415,7 @@ async function seedDb() {
       }
     }
 
-    console.log('✅ DearThreado Database seeded successfully with sample data!');
+    console.log('✅ DearThreado Database seeded successfully with finalized 4 categories and 16 products!');
   } catch (err) {
     console.error('❌ Error seeding Database:', err);
     throw err;

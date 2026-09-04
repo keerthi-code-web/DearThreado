@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ShoppingBag, Star, Sparkles, Check, ArrowLeft, Heart } from 'lucide-react';
+import { ShoppingBag, Star, Sparkles, Check, ArrowLeft, Heart, PackageCheck } from 'lucide-react';
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
 import CustomizationForm from '../components/CustomizationForm';
@@ -19,6 +19,7 @@ const ProductDetail = () => {
   const [addedSuccess, setAddedSuccess] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchProduct = async () => {
       try {
         setLoading(true);
@@ -58,7 +59,6 @@ const ProductDetail = () => {
   }
 
   const handleAddToCart = async () => {
-    // Validate required customization fields
     if (product.customization_fields) {
       for (const field of product.customization_fields) {
         if (field.is_required && !customizationValues[field.field_label]) {
@@ -81,6 +81,8 @@ const ProductDetail = () => {
     }
   };
 
+  const hasReviews = product.review_count > 0;
+
   return (
     <div className="container py-5">
       <Link to="/" className="text-decoration-none text-muted small d-inline-flex align-items-center gap-1 mb-4">
@@ -88,7 +90,7 @@ const ProductDetail = () => {
       </Link>
 
       <div className="row g-5">
-        {/* Images Gallery */}
+        {/* LEFT: Images Gallery */}
         <div className="col-md-6">
           <div className="dt-card p-2 mb-3 bg-white">
             <div className="rounded-4 overflow-hidden" style={{ height: '420px', backgroundColor: '#FAF8FF' }}>
@@ -117,7 +119,7 @@ const ProductDetail = () => {
           )}
         </div>
 
-        {/* Product Details & Actions */}
+        {/* RIGHT: Product Details, Handmade Info & Actions */}
         <div className="col-md-6">
           <div className="d-flex align-items-center gap-2 mb-2">
             <span className="dt-badge-purple">
@@ -132,36 +134,45 @@ const ProductDetail = () => {
 
           <h1 className="fw-bold text-dark mb-2">{product.name}</h1>
 
-          {/* Rating Summary */}
+          {/* Rating Summary (No fake ratings if no reviews exist) */}
           <div className="d-flex align-items-center gap-2 mb-3">
-            <div className="d-flex text-warning">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={16} fill={i < Math.round(product.average_rating || 5) ? '#F59E0B' : 'none'} color="#F59E0B" />
-              ))}
-            </div>
-            <span className="fw-bold small">{product.average_rating || 5.0}</span>
-            <span className="text-muted small">({product.review_count || 0} reviews)</span>
+            {hasReviews ? (
+              <>
+                <div className="d-flex text-warning">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={16} fill={i < Math.round(product.average_rating) ? '#F59E0B' : 'none'} color="#F59E0B" />
+                  ))}
+                </div>
+                <span className="fw-bold small">{product.average_rating}</span>
+                <span className="text-muted small">({product.review_count} reviews)</span>
+              </>
+            ) : (
+              <span className="text-muted small fst-italic">No reviews yet</span>
+            )}
           </div>
 
-          <div className="display-6 fw-bold mb-4" style={{ color: '#7C3AED' }}>
-            ${parseFloat(product.price).toFixed(2)}
+          <div className="display-6 fw-bold mb-3" style={{ color: '#7C3AED' }}>
+            ₹{parseFloat(product.price).toFixed(2)}
           </div>
 
           <p className="text-muted mb-4 lead fs-6">
             {product.description}
           </p>
 
-          {/* Dynamic Customization Form */}
-          {product.customization_fields && product.customization_fields.length > 0 && (
-            <CustomizationForm
-              fields={product.customization_fields}
-              values={customizationValues}
-              onChange={setCustomizationValues}
-            />
+          {/* Handmade Details & Materials MOVED UPWARD */}
+          {product.specifications && (
+            <div className="p-3 rounded-4 mb-4" style={{ backgroundColor: '#FAF8FF', border: '1px solid #EDE9FE' }}>
+              <h6 className="fw-bold text-dark mb-1 d-flex align-items-center gap-1">
+                <PackageCheck size={16} color="#7C3AED" /> Handmade Details & Materials
+              </h6>
+              <p className="text-muted small mb-0">{product.specifications}</p>
+              {product.size && <div className="small text-muted mt-1"><strong>Size:</strong> {product.size}</div>}
+              {product.color && <div className="small text-muted"><strong>Color:</strong> {product.color}</div>}
+            </div>
           )}
 
           {/* Quantity & Add to Cart */}
-          <div className="d-flex align-items-center gap-3 mt-4">
+          <div className="d-flex align-items-center gap-3 my-4">
             <div className="d-flex align-items-center border rounded-pill p-1 bg-white" style={{ width: '130px' }}>
               <button 
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -200,12 +211,13 @@ const ProductDetail = () => {
             </div>
           )}
 
-          {/* Product Specifications */}
-          {product.specifications && (
-            <div className="mt-5 pt-4 border-top">
-              <h6 className="fw-bold text-dark mb-2">Handmade Details & Materials</h6>
-              <p className="text-muted small mb-0">{product.specifications}</p>
-            </div>
+          {/* BELOW: Dynamic Customization Form */}
+          {product.customization_fields && product.customization_fields.length > 0 && (
+            <CustomizationForm
+              fields={product.customization_fields}
+              values={customizationValues}
+              onChange={setCustomizationValues}
+            />
           )}
         </div>
       </div>

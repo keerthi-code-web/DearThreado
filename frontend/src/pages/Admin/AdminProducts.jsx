@@ -180,7 +180,7 @@ const AdminProducts = () => {
                     <div className="small text-muted">{prod.subcategory_name}</div>
                   </td>
                   <td className="fw-bold" style={{ color: '#7C3AED' }}>
-                    ${parseFloat(prod.price).toFixed(2)}
+                    ₹{parseFloat(prod.price).toFixed(2)}
                   </td>
                   <td>
                     {prod.customization_enabled ? (
@@ -236,7 +236,7 @@ const AdminProducts = () => {
         </div>
       </div>
 
-      {/* Product Modal */}
+      {/* Product Modal with Clean Scrollability */}
       {showProductModal && (
         <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
           <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -246,7 +246,7 @@ const AdminProducts = () => {
                 <button type="button" className="btn-close" onClick={() => setShowProductModal(false)}></button>
               </div>
               <form onSubmit={handleSaveProduct}>
-                <div className="modal-body p-4">
+                <div className="modal-body p-4" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
                   <div className="row g-3">
                     <div className="col-md-6">
                       <label className="form-label small fw-semibold">Category *</label>
@@ -284,7 +284,7 @@ const AdminProducts = () => {
                     </div>
 
                     <div className="col-md-6">
-                      <label className="form-label small fw-semibold">Price ($) *</label>
+                      <label className="form-label small fw-semibold">Price (₹) *</label>
                       <input 
                         type="number" 
                         step="0.01"

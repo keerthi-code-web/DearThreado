@@ -89,8 +89,8 @@ exports.getProductBySlug = async (req, res) => {
 
     // Calculate rating summary
     const avgRating = reviews.length > 0
-      ? (reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length).toFixed(1)
-      : 5.0;
+      ? parseFloat((reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length).toFixed(1))
+      : 0;
 
     res.json({
       success: true,
@@ -100,7 +100,7 @@ exports.getProductBySlug = async (req, res) => {
         customization_fields: parsedCustomization,
         reviews,
         review_count: reviews.length,
-        average_rating: parseFloat(avgRating)
+        average_rating: avgRating
       }
     });
   } catch (err) {

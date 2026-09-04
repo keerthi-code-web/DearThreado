@@ -128,10 +128,10 @@ const ProductRequest = () => {
                   value={formData.budget_range}
                   onChange={handleChange}
                 >
-                  <option value="Under $20">Under $20</option>
-                  <option value="$20 - $50">$20 - $50</option>
-                  <option value="$50 - $100">$50 - $100</option>
-                  <option value="$100+">$100+</option>
+                  <option value="Under ₹500">Under ₹500</option>
+                  <option value="₹500 - ₹1,000">₹500 - ₹1,000</option>
+                  <option value="₹1,000 - ₹2,500">₹1,000 - ₹2,500</option>
+                  <option value="₹2,500+">₹2,500+</option>
                 </select>
               </div>
 
