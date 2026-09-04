@@ -3,9 +3,15 @@ const { query } = require('../config/db');
 exports.createReview = async (req, res) => {
   try {
     const userId = req.user.id;
-    let { product_id, rating, comment, image_url } = req.body;
+    const rawProductId = req.body.product_id || req.body.productId || req.body.id;
+    const { rating, comment, image_url } = req.body;
 
-    if (!product_id) {
+    if (!rawProductId) {
+      return res.status(400).json({ success: false, message: 'Product ID is required.' });
+    }
+
+    const targetProductId = parseInt(rawProductId);
+    if (isNaN(targetProductId)) {
       return res.status(400).json({ success: false, message: 'Product ID is required.' });
     }
 
@@ -17,8 +23,6 @@ exports.createReview = async (req, res) => {
     if (!comment || typeof comment !== 'string' || !comment.trim()) {
       return res.status(400).json({ success: false, message: 'Written review comment is required.' });
     }
-
-    const targetProductId = parseInt(product_id);
 
     // ELIGIBILITY CHECK: Check if customer has purchased product in a delivered order
     let eligibleOrders = await query(`

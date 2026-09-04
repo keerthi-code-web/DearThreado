@@ -141,7 +141,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="container py-4 py-md-5">
-      {/* PART 1: Admin Hero Section (Visual Treatment Matching Customer Hero) */}
+      {/* ADMIN HERO SECTION (LOCKED) */}
       <div 
         className="rounded-4 p-4 p-md-5 mb-5 position-relative border"
         style={{ 
@@ -163,7 +163,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* PART 2: Six Primary Admin Statistics (Visual Consistency) */}
+      {/* SIX PRIMARY ADMIN STATISTICS (Restrained DearThreado Palette Accent Refinement) */}
       <div className="mb-5">
         <div className="d-flex align-items-center justify-content-between mb-3">
           <h5 className="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
@@ -173,9 +173,9 @@ const AdminDashboard = () => {
         </div>
 
         <div className="row g-3">
-          {/* 1. Total Revenue */}
+          {/* 1. Total Revenue (Purple Accent) */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
+            <div className="dt-card p-4 h-100 border-start border-4" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE', borderLeftColor: '#7C3AED' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Total Revenue</span>
                 <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
@@ -189,12 +189,12 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* 2. New Orders */}
+          {/* 2. New Orders (Soft Golden / Yellow Accent) */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
+            <div className="dt-card p-4 h-100 border-start border-4" style={{ backgroundColor: '#FFFBEB', borderColor: '#FEF3C7', borderLeftColor: '#F59E0B' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>New Orders</span>
-                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
+                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#F59E0B' }}>
                   <Package size={20} />
                 </div>
               </div>
@@ -205,12 +205,12 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* 3. New Requests */}
+          {/* 3. New Requests (Blue Accent) */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
+            <div className="dt-card p-4 h-100 border-start border-4" style={{ backgroundColor: '#EFF6FF', borderColor: '#DBEAFE', borderLeftColor: '#3B82F6' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>New Requests</span>
-                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
+                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#3B82F6' }}>
                   <MessageSquare size={20} />
                 </div>
               </div>
@@ -221,12 +221,12 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* 4. New Reviews */}
+          {/* 4. New Reviews (Pink Accent) */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
+            <div className="dt-card p-4 h-100 border-start border-4" style={{ backgroundColor: '#FDF2F8', borderColor: '#FCE7F3', borderLeftColor: '#EC4899' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>New Reviews</span>
-                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
+                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#EC4899' }}>
                   <Star size={20} />
                 </div>
               </div>
@@ -237,9 +237,9 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* 5. Delivered Orders */}
+          {/* 5. Delivered Orders (Purple Accent) */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
+            <div className="dt-card p-4 h-100 border-start border-4" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE', borderLeftColor: '#7C3AED' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Delivered Orders</span>
                 <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
@@ -253,12 +253,12 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* 6. Cancelled Orders */}
+          {/* 6. Cancelled Orders (Soft Rose Pink Accent) */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
+            <div className="dt-card p-4 h-100 border-start border-4" style={{ backgroundColor: '#FFF1F2', borderColor: '#FFE4E6', borderLeftColor: '#E11D48' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Cancelled Orders</span>
-                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
+                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#E11D48' }}>
                   <XCircle size={20} />
                 </div>
               </div>
@@ -271,7 +271,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* SECTION 3: Main Administrative Modules (Locked 5 Functions) */}
+      {/* STORE MANAGEMENT MODULES (LOCKED 5 FUNCTIONS) */}
       <div className="mb-5">
         <div className="d-flex align-items-center justify-content-between mb-3">
           <div>
@@ -316,7 +316,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* SECTION 4: Recent Operational Activity */}
+      {/* RECENT OPERATIONAL ACTIVITY (LOCKED) */}
       <div className="row g-4 mb-5">
         {/* Recent Orders */}
         <div className="col-lg-7">
@@ -402,7 +402,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* PART 4: DEARTHREADO HEART / FEEL SECTION (Letters of Meaning / Envelopes) */}
+      {/* DEARTHREADO HEART / FEEL SECTION (Letters of Meaning / Envelopes) */}
       <section className="py-4 my-3 rounded-4 position-relative overflow-hidden" style={{ backgroundColor: '#FAF8FF' }}>
         <div className="container position-relative" style={{ zIndex: 2 }}>
           <div className="text-center mb-4 max-w-700 mx-auto">
