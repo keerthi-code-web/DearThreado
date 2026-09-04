@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Package, Truck, Calendar, MapPin, AlertTriangle, Star, Sparkles, XCircle, ArrowLeft } from 'lucide-react';
 import api from '../services/api';
 import StatusBadge from '../components/StatusBadge';
+import { formatDateTime, formatDate } from '../utils/formatters';
 
 const OrderDetail = () => {
   const { id } = useParams();
@@ -108,7 +109,7 @@ const OrderDetail = () => {
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
         <div>
           <h2 className="fw-bold text-dark mb-1">Order #{order.order_number}</h2>
-          <span className="text-muted small">Placed on {new Date(order.created_at).toLocaleString()}</span>
+          <span className="text-muted small">Placed on {formatDateTime(order.created_at)}</span>
         </div>
         <div className="d-flex align-items-center gap-3">
           <StatusBadge status={order.status} />
@@ -231,13 +232,13 @@ const OrderDetail = () => {
 
             <div className="small text-muted mb-1 d-flex justify-content-between">
               <span>Requested Delivery Date:</span>
-              <span className="fw-bold text-dark">{new Date(order.requested_delivery_date).toLocaleDateString()}</span>
+              <span className="fw-bold text-dark">{formatDate(order.requested_delivery_date)}</span>
             </div>
 
             {order.actual_delivery_date && (
               <div className="small text-muted mb-1 d-flex justify-content-between">
                 <span>Actual Delivery Date:</span>
-                <span className="fw-bold text-success">{new Date(order.actual_delivery_date).toLocaleDateString()}</span>
+                <span className="fw-bold text-success">{formatDate(order.actual_delivery_date)}</span>
               </div>
             )}
 

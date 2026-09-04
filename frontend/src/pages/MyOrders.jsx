@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Package, ArrowRight, Calendar } from 'lucide-react';
 import api from '../services/api';
 import StatusBadge from '../components/StatusBadge';
+import { formatDateTime, formatDate } from '../utils/formatters';
 
 const MyOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -49,15 +50,15 @@ const MyOrders = () => {
                 <div className="col-md-3">
                   <div className="fw-bold text-dark fs-6">{order.order_number}</div>
                   <div className="small text-muted d-flex align-items-center gap-1 mt-1">
-                    <Calendar size={14} /> Placed on {new Date(order.created_at).toLocaleDateString()}
+                    <Calendar size={14} /> Placed on {formatDateTime(order.created_at)}
                   </div>
                 </div>
 
                 <div className="col-md-3">
                   <div className="small text-muted">Delivery Dates</div>
-                  <div className="fw-medium small text-dark">Req: {new Date(order.requested_delivery_date).toLocaleDateString()}</div>
+                  <div className="fw-medium small text-dark">Req: {formatDate(order.requested_delivery_date)}</div>
                   {order.actual_delivery_date && (
-                    <div className="small text-success fw-bold">Delivered: {new Date(order.actual_delivery_date).toLocaleDateString()}</div>
+                    <div className="small text-success fw-bold">Delivered: {formatDate(order.actual_delivery_date)}</div>
                   )}
                 </div>
 

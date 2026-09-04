@@ -2,6 +2,7 @@ import React from 'react';
 import { Bell, CheckCheck, Package, MessageSquare, Star } from 'lucide-react';
 import { useNotifications } from '../context/NotificationContext';
 import { Link } from 'react-router-dom';
+import { formatDateTime } from '../utils/formatters';
 
 const Notifications = () => {
   const { notifications, markAsRead, markAllAsRead } = useNotifications();
@@ -57,7 +58,7 @@ const Notifications = () => {
               <div className="flex-grow-1">
                 <div className="d-flex justify-content-between align-items-center mb-1">
                   <h6 className="fw-bold text-dark mb-0">{n.title}</h6>
-                  <span className="small text-muted">{new Date(n.created_at).toLocaleString()}</span>
+                  <span className="small text-muted">{formatDateTime(n.created_at)}</span>
                 </div>
                 <p className="text-muted small mb-2">{n.message}</p>
 

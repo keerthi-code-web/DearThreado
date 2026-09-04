@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Sparkles, ArrowRight, Heart, MessageCircleHeart, CheckCircle2, ChevronLeft, ChevronRight, Mail, MailOpen } from 'lucide-react';
 import api from '../services/api';
 import ProductCard from '../components/ProductCard';
-import ThreadCurve from '../components/ThreadCurve';
 
 const emotionalMessages = [
   {
@@ -152,8 +151,6 @@ const Home = () => {
         </div>
       </section>
 
-      <ThreadCurve />
-
       {/* Categories Discovery Section */}
       <section id="categories" className="py-4">
         <div className="container">
@@ -240,7 +237,7 @@ const Home = () => {
       </section>
 
       {/* NEW MODIFICATION 1: DEARTHREADO EMOTIONAL STORY SECTION (Envelopes + Hidden Cards) */}
-      <section className="py-5 my-2 position-relative overflow-hidden" style={{ backgroundColor: '#FAF8FF', borderTop: '1px solid #EDE9FE', borderBottom: '1px solid #EDE9FE' }}>
+      <section className="py-5 my-2 position-relative overflow-hidden" style={{ backgroundColor: '#FAF8FF' }}>
         <div className="container position-relative" style={{ zIndex: 2 }}>
           <div className="text-center mb-4 max-w-700 mx-auto">
             <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2 border small fw-bold" style={{ backgroundColor: '#ffffff', borderColor: '#DDD6FE', color: '#7C3AED' }}>
@@ -332,7 +329,7 @@ const Home = () => {
       </section>
 
       {/* Product Request / Feedback Banner */}
-      <section className="py-5 my-3" style={{ backgroundColor: '#FAF8FF', borderTop: '1px solid #EDE9FE', borderBottom: '1px solid #EDE9FE' }}>
+      <section className="py-5 my-3" style={{ backgroundColor: '#FAF8FF' }}>
         <div className="container">
           <div className="row align-items-center justify-content-between g-4">
             <div className="col-md-7">

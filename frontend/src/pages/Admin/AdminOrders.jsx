@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Package, Calendar, CheckCircle, AlertTriangle, Eye, XCircle } from 'lucide-react';
 import api from '../../services/api';
 import StatusBadge from '../../components/StatusBadge';
+import { formatDate } from '../../utils/formatters';
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -158,7 +159,7 @@ const AdminOrders = () => {
                     <div className="fw-semibold text-dark">{ord.customer_name}</div>
                     <div className="text-muted">{ord.customer_phone}</div>
                   </td>
-                  <td>{new Date(ord.requested_delivery_date).toLocaleDateString()}</td>
+                  <td>{formatDate(ord.requested_delivery_date)}</td>
                   <td>
                     <input 
                       type="date"
@@ -238,13 +239,13 @@ const AdminOrders = () => {
 
                   <div className="col-md-6">
                     <h6 className="fw-bold text-dark mb-1">Requested Delivery Date</h6>
-                    <div className="small text-dark fw-bold">{new Date(selectedOrder.requested_delivery_date).toLocaleDateString()}</div>
+                    <div className="small text-dark fw-bold">{formatDate(selectedOrder.requested_delivery_date)}</div>
                   </div>
 
                   <div className="col-md-6">
                     <h6 className="fw-bold text-dark mb-1">Actual Delivery Date</h6>
                     <div className="small text-success fw-bold">
-                      {selectedOrder.actual_delivery_date ? new Date(selectedOrder.actual_delivery_date).toLocaleDateString() : 'Not Delivered Yet'}
+                      {selectedOrder.actual_delivery_date ? formatDate(selectedOrder.actual_delivery_date) : 'Not Delivered Yet'}
                     </div>
                   </div>
                 </div>

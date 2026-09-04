@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { MessageSquare, Check, Send } from 'lucide-react';
 import api from '../../services/api';
+import { formatDateTime } from '../../utils/formatters';
 
 const AdminRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -116,7 +117,7 @@ const AdminRequests = () => {
               
               <div className="d-flex flex-wrap gap-3 text-muted small mb-3">
                 <span>Budget: <strong>{req.budget_range || 'N/A'}</strong></span>
-                <span>Submitted: <strong>{new Date(req.created_at).toLocaleDateString()}</strong></span>
+                <span>Submitted: <strong>{formatDateTime(req.created_at)}</strong></span>
               </div>
 
               {req.reference_image_url && (
