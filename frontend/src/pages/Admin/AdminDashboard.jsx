@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   FolderTree, 
@@ -13,14 +13,58 @@ import {
   ShieldCheck, 
   Sparkles,
   Layers,
-  ChevronRight
+  ChevronRight,
+  Mail,
+  MailOpen,
+  Heart
 } from 'lucide-react';
 import api from '../../services/api';
 import StatusBadge from '../../components/StatusBadge';
 
+const emotionalMessages = [
+  {
+    id: 1,
+    tag: "Ordinary Moments",
+    title: "Making Days Special",
+    peek: "Sometimes a gift doesn't make a special day better...",
+    message: "Sometimes a gift doesn't make a special day better. It makes an ordinary day feel special.",
+    accent: "#7C3AED",
+    bg: "#FAF8FF"
+  },
+  {
+    id: 2,
+    tag: "Why We Gift",
+    title: "Effort Connects Hearts",
+    peek: "A gift is not just an object. It's a quiet message...",
+    message: "A gift is not just an object. It's a quiet message saying: 'I spent time thinking about you.'",
+    accent: "#6D28D9",
+    bg: "#FAF8FF"
+  },
+  {
+    id: 3,
+    tag: "Handmade Touch",
+    title: "Crafted With Purpose",
+    peek: "Machine items fill shelves. Handmade items fill hearts...",
+    message: "Machine-made items fill shelves. Handmade items fill hearts with warmth and intention.",
+    accent: "#4C1D95",
+    bg: "#FAF8FF"
+  },
+  {
+    id: 4,
+    tag: "DearThreado Purpose",
+    title: "Wrapped With Care",
+    peek: "A little piece of my time, wrapped in love...",
+    message: "A little piece of my time, wrapped in love. DearThreado exists to turn simple moments into lasting memories.",
+    accent: "#7C3AED",
+    bg: "#FAF8FF"
+  }
+];
+
 const AdminDashboard = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [openEnvelopeId, setOpenEnvelopeId] = useState(null);
+  const storyScrollRef = useRef(null);
 
   useEffect(() => {
     api.get('/admin/dashboard/stats')
@@ -60,7 +104,7 @@ const AdminDashboard = () => {
       icon: ShoppingBag,
       path: '/admin/products',
       accent: '#4F46E5',
-      bg: '#F5F3FF',
+      bg: '#FAF8FF',
       countLabel: `${stats.total_products || 0} Active Products`
     },
     {
@@ -70,7 +114,7 @@ const AdminDashboard = () => {
       icon: Package,
       path: '/admin/orders',
       accent: '#10B981',
-      bg: '#ECFDF5',
+      bg: '#FAF8FF',
       countLabel: `${stats.total_orders || 0} Total Orders (${stats.new_orders || 0} New)`
     },
     {
@@ -80,7 +124,7 @@ const AdminDashboard = () => {
       icon: Star,
       path: '/admin/reviews',
       accent: '#F59E0B',
-      bg: '#FFFBEB',
+      bg: '#FAF8FF',
       countLabel: `${stats.pending_reviews || 0} Pending Moderation`
     },
     {
@@ -90,42 +134,36 @@ const AdminDashboard = () => {
       icon: MessageSquare,
       path: '/admin/requests',
       accent: '#3B82F6',
-      bg: '#EFF6FF',
+      bg: '#FAF8FF',
       countLabel: `${stats.pending_requests || 0} Open Requests`
     }
   ];
 
   return (
     <div className="container py-4 py-md-5">
-      {/* SECTION 1: Admin Hero Section */}
+      {/* PART 1: Admin Hero Section (Visual Treatment Matching Customer Hero) */}
       <div 
-        className="rounded-4 p-4 p-md-5 mb-5 position-relative overflow-hidden shadow-sm"
+        className="rounded-4 p-4 p-md-5 mb-5 position-relative border"
         style={{ 
-          background: 'linear-gradient(135deg, #4C1D95 0%, #6D28D9 50%, #7C3AED 100%)', 
-          color: '#ffffff' 
+          backgroundColor: '#FAF8FF',
+          borderColor: '#EDE9FE'
         }}
       >
-        <div className="position-relative" style={{ zIndex: 2 }}>
-          <div className="d-inline-flex align-items-center gap-2 px-3 py-1.5 rounded-pill mb-3 border border-white-20" style={{ backgroundColor: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(10px)' }}>
-            <ShieldCheck size={16} color="#FDE047" />
-            <span className="small fw-semibold text-white">Central Operations Command</span>
+        <div className="max-w-700">
+          <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3 border small fw-bold" style={{ backgroundColor: '#ffffff', borderColor: '#DDD6FE', color: '#7C3AED' }}>
+            <ShieldCheck size={15} /> Central Operations Command
           </div>
 
-          <h1 className="display-6 fw-extrabold mb-2" style={{ letterSpacing: '-0.5px' }}>
+          <h1 className="display-6 fw-extrabold text-dark mb-2" style={{ letterSpacing: '-0.5px' }}>
             Admin Management Portal
           </h1>
-          <p className="lead mb-0 text-white-80" style={{ fontSize: '1.05rem', maxWidth: '650px' }}>
+          <p className="lead text-muted mb-0" style={{ fontSize: '1.05rem' }}>
             Overview of DearThreado store performance &amp; requests
           </p>
         </div>
-
-        {/* Decorative subtle background thread element */}
-        <div className="position-absolute end-0 bottom-0 opacity-10 pe-4 pb-2 d-none d-md-block pointer-events-none">
-          <Sparkles size={180} color="#ffffff" />
-        </div>
       </div>
 
-      {/* SECTION 2: Six Primary Admin Statistics */}
+      {/* PART 2: Six Primary Admin Statistics (Visual Consistency) */}
       <div className="mb-5">
         <div className="d-flex align-items-center justify-content-between mb-3">
           <h5 className="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
@@ -137,7 +175,7 @@ const AdminDashboard = () => {
         <div className="row g-3">
           {/* 1. Total Revenue */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border-start border-4" style={{ borderColor: '#7C3AED', backgroundColor: '#FAF8FF' }}>
+            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Total Revenue</span>
                 <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
@@ -153,10 +191,10 @@ const AdminDashboard = () => {
 
           {/* 2. New Orders */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border-start border-4" style={{ borderColor: '#F59E0B', backgroundColor: '#FFFBEB' }}>
+            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>New Orders</span>
-                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#F59E0B' }}>
+                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
                   <Package size={20} />
                 </div>
               </div>
@@ -169,10 +207,10 @@ const AdminDashboard = () => {
 
           {/* 3. New Requests */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border-start border-4" style={{ borderColor: '#3B82F6', backgroundColor: '#EFF6FF' }}>
+            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>New Requests</span>
-                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#3B82F6' }}>
+                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
                   <MessageSquare size={20} />
                 </div>
               </div>
@@ -185,10 +223,10 @@ const AdminDashboard = () => {
 
           {/* 4. New Reviews */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border-start border-4" style={{ borderColor: '#EC4899', backgroundColor: '#FDF2F8' }}>
+            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>New Reviews</span>
-                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#EC4899' }}>
+                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
                   <Star size={20} />
                 </div>
               </div>
@@ -201,10 +239,10 @@ const AdminDashboard = () => {
 
           {/* 5. Delivered Orders */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border-start border-4" style={{ borderColor: '#10B981', backgroundColor: '#ECFDF5' }}>
+            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Delivered Orders</span>
-                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#10B981' }}>
+                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
                   <CheckCircle2 size={20} />
                 </div>
               </div>
@@ -217,10 +255,10 @@ const AdminDashboard = () => {
 
           {/* 6. Cancelled Orders */}
           <div className="col-12 col-md-6 col-lg-4">
-            <div className="dt-card p-4 h-100 border-start border-4" style={{ borderColor: '#EF4444', backgroundColor: '#FEF2F2' }}>
+            <div className="dt-card p-4 h-100 border" style={{ backgroundColor: '#FAF8FF', borderColor: '#EDE9FE' }}>
               <div className="d-flex justify-content-between align-items-start mb-2">
                 <span className="text-muted small fw-semibold text-uppercase" style={{ letterSpacing: '0.5px' }}>Cancelled Orders</span>
-                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#EF4444' }}>
+                <div className="p-2 rounded-circle bg-white shadow-sm" style={{ color: '#7C3AED' }}>
                   <XCircle size={20} />
                 </div>
               </div>
@@ -233,7 +271,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      {/* SECTION 3: Main Administrative Modules (5 Function Areas) */}
+      {/* SECTION 3: Main Administrative Modules (Locked 5 Functions) */}
       <div className="mb-5">
         <div className="d-flex align-items-center justify-content-between mb-3">
           <div>
@@ -279,7 +317,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* SECTION 4: Recent Operational Activity */}
-      <div className="row g-4 mb-4">
+      <div className="row g-4 mb-5">
         {/* Recent Orders */}
         <div className="col-lg-7">
           <div className="dt-card p-4 h-100">
@@ -363,6 +401,88 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+
+      {/* PART 4: DEARTHREADO HEART / FEEL SECTION (Letters of Meaning / Envelopes) */}
+      <section className="py-4 my-3 rounded-4 position-relative overflow-hidden" style={{ backgroundColor: '#FAF8FF' }}>
+        <div className="container position-relative" style={{ zIndex: 2 }}>
+          <div className="text-center mb-4 max-w-700 mx-auto">
+            <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2 border small fw-bold" style={{ backgroundColor: '#ffffff', borderColor: '#DDD6FE', color: '#7C3AED' }}>
+              <Mail size={15} /> Letters of Meaning
+            </div>
+            <h3 className="fw-extrabold text-dark mb-2">The Heart Behind DearThreado</h3>
+            <p className="text-muted small mb-0">
+              Tap any envelope to open a little letter about why handmade gifts matter &amp; how effort connects hearts.
+            </p>
+          </div>
+
+          <div 
+            ref={storyScrollRef}
+            className="d-flex gap-4 overflow-x-auto py-3 px-2 no-scrollbar align-items-start"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {emotionalMessages.map((item) => {
+              const isOpen = openEnvelopeId === item.id;
+              return (
+                <div 
+                  key={item.id} 
+                  onClick={() => setOpenEnvelopeId(isOpen ? null : item.id)}
+                  className="cursor-pointer select-none transition-all"
+                  style={{ 
+                    flex: '0 0 300px', 
+                    minWidth: '300px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  <div 
+                    className="rounded-4 p-4 position-relative shadow-sm transition-all border"
+                    style={{ 
+                      backgroundColor: isOpen ? '#ffffff' : item.bg, 
+                      borderColor: isOpen ? item.accent : '#EDE9FE',
+                      minHeight: '250px',
+                      transform: isOpen ? 'translateY(-4px)' : 'translateY(0)',
+                      transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)'
+                    }}
+                  >
+                    <div className="d-flex align-items-center justify-content-between mb-3">
+                      <span className="badge rounded-pill fw-bold text-uppercase" style={{ backgroundColor: '#ffffff', color: item.accent, border: `1px solid ${item.accent}33`, fontSize: '0.7rem' }}>
+                        {item.tag}
+                      </span>
+                      <div className="d-flex align-items-center gap-1">
+                        {isOpen ? <MailOpen size={18} color={item.accent} /> : <Mail size={18} color={item.accent} />}
+                        <Heart size={14} fill={item.accent} color={item.accent} />
+                      </div>
+                    </div>
+
+                    <h5 className="fw-bold mb-2 text-dark">{item.title}</h5>
+
+                    {!isOpen ? (
+                      <div>
+                        <p className="text-muted small mb-3 fst-italic line-clamp-2">
+                          "{item.peek}"
+                        </p>
+                        <div className="p-2.5 rounded-3 text-center border border-dashed bg-white small fw-semibold" style={{ color: item.accent, borderColor: item.accent }}>
+                          ✨ Tap to open letter
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="p-3 rounded-3 bg-white border shadow-sm animate-fadeIn" style={{ borderColor: `${item.accent}44` }}>
+                        <p className="font-editorial fst-italic mb-0 text-dark" style={{ fontSize: '1rem', lineHeight: '1.5' }}>
+                          "{item.message}"
+                        </p>
+                        <div className="text-end mt-2">
+                          <span className="small text-muted fw-bold" style={{ fontSize: '0.75rem', color: item.accent }}>
+                            &mdash; DearThreado Thoughts
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };

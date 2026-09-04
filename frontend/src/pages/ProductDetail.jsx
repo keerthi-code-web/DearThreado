@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ShoppingBag, Star, Sparkles, Check, ArrowLeft, Heart, PackageCheck } from 'lucide-react';
 import api from '../services/api';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import CustomizationForm from '../components/CustomizationForm';
 
 const ProductDetail = () => {
@@ -10,6 +11,7 @@ const ProductDetail = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
 
+  const { user } = useAuth();
   const [product, setProduct] = useState(null);
   const [selectedImage, setSelectedImage] = useState('');
   const [quantity, setQuantity] = useState(1);
@@ -18,25 +20,54 @@ const ProductDetail = () => {
   const [adding, setAdding] = useState(false);
   const [addedSuccess, setAddedSuccess] = useState(false);
 
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [reviewRating, setReviewRating] = useState(5);
+  const [reviewComment, setReviewComment] = useState('');
+  const [submittingReview, setSubmittingReview] = useState(false);
+
+  const fetchProduct = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get(`/products/${slug}`);
+      if (res.data.success) {
+        const prod = res.data.product;
+        setProduct(prod);
+        if (prod.images && prod.images.length > 0) {
+          setSelectedImage(prod.images[0]);
+        }
+      }
+    } catch (err) {
+      console.error('Fetch Product Error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!product) return;
+    try {
+      setSubmittingReview(true);
+      const res = await api.post('/reviews', {
+        product_id: product.id,
+        rating: reviewRating,
+        comment: reviewComment
+      });
+      if (res.data.success) {
+        alert('Thank you! Your review has been submitted and is currently pending admin moderation before appearing publicly.');
+        setShowReviewModal(false);
+        setReviewComment('');
+        fetchProduct();
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to submit review.');
+    } finally {
+      setSubmittingReview(false);
+    }
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        const res = await api.get(`/products/${slug}`);
-        if (res.data.success) {
-          const prod = res.data.product;
-          setProduct(prod);
-          if (prod.images && prod.images.length > 0) {
-            setSelectedImage(prod.images[0]);
-          }
-        }
-      } catch (err) {
-        console.error('Fetch Product Detail Error:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchProduct();
   }, [slug]);
 
@@ -224,7 +255,18 @@ const ProductDetail = () => {
 
       {/* Customer Reviews Section */}
       <div className="mt-5 pt-5 border-top">
-        <h3 className="fw-bold text-dark mb-4">Customer Reviews & Memories</h3>
+        <div className="d-flex align-items-center justify-content-between mb-4">
+          <h3 className="fw-bold text-dark mb-0">Customer Reviews &amp; Memories</h3>
+          {user && (
+            <button 
+              onClick={() => setShowReviewModal(true)} 
+              className="btn btn-sm btn-outline-purple d-flex align-items-center gap-1 rounded-pill"
+              style={{ color: '#7C3AED', borderColor: '#7C3AED' }}
+            >
+              <Star size={16} /> Write a Review
+            </button>
+          )}
+        </div>
         
         {!product.reviews || product.reviews.length === 0 ? (
           <div className="p-4 text-center rounded-4 bg-white border text-muted small">
@@ -253,6 +295,57 @@ const ProductDetail = () => {
           </div>
         )}
       </div>
+
+      {/* Review Submission Modal */}
+      {showReviewModal && (
+        <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content rounded-4 border-0 p-3">
+              <div className="modal-header border-0">
+                <h5 className="modal-title fw-bold">Review "{product.name}"</h5>
+                <button type="button" className="btn-close" onClick={() => setShowReviewModal(false)}></button>
+              </div>
+              <form onSubmit={handleSubmitReview}>
+                <div className="modal-body">
+                  <div className="mb-3 text-center">
+                    <label className="form-label small fw-semibold text-muted d-block">Rating</label>
+                    <div className="d-flex justify-content-center gap-2">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <button
+                          key={star}
+                          type="button"
+                          onClick={() => setReviewRating(star)}
+                          className="btn btn-link p-0 text-warning border-0"
+                        >
+                          <Star size={32} fill={star <= reviewRating ? '#F59E0B' : 'none'} color="#F59E0B" />
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mb-3">
+                    <label className="form-label small fw-semibold">Your Review Comment *</label>
+                    <textarea 
+                      className="form-control rounded-3" 
+                      rows="4"
+                      placeholder="How was your handmade gifting experience? Describe the item and quality..."
+                      value={reviewComment}
+                      onChange={(e) => setReviewComment(e.target.value)}
+                      required
+                    ></textarea>
+                  </div>
+                </div>
+                <div className="modal-footer border-0">
+                  <button type="button" className="btn btn-light" onClick={() => setShowReviewModal(false)}>Cancel</button>
+                  <button type="submit" className="btn-dt-primary" disabled={submittingReview}>
+                    {submittingReview ? 'Submitting...' : 'Submit Review'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

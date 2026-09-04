@@ -62,29 +62,20 @@ exports.login = async (req, res) => {
     }
 
     const user = users[0];
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Invalid email or password.' });
     }
 
     const userPayload = { id: user.id, name: user.name, email: user.email, role: user.role };
     const token = jwt.sign(userPayload, JWT_SECRET, { expiresIn: '7d' });
 
+    delete user.password;
     res.json({
       success: true,
-      message: `Welcome back, ${user.name}!`,
+      message: 'Login successful!',
       token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone || '',
-        role: user.role,
-        street_address: user.street_address || '',
-        city: user.city || '',
-        state: user.state || '',
-        zip_code: user.zip_code || ''
-      }
+      user
     });
   } catch (err) {
     console.error('Login Error:', err);
@@ -106,28 +97,24 @@ exports.adminLogin = async (req, res) => {
     }
 
     const user = users[0];
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Invalid admin credentials.' });
     }
 
     const userPayload = { id: user.id, name: user.name, email: user.email, role: 'admin' };
     const token = jwt.sign(userPayload, JWT_SECRET, { expiresIn: '7d' });
 
+    delete user.password;
     res.json({
       success: true,
-      message: 'Admin authentication successful.',
+      message: 'Admin authentication successful!',
       token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: 'admin'
-      }
+      user
     });
   } catch (err) {
     console.error('Admin Login Error:', err);
-    res.status(500).json({ success: false, message: 'Server error during admin login.' });
+    res.status(500).json({ success: false, message: 'Server error during admin authentication.' });
   }
 };
 
@@ -135,7 +122,7 @@ exports.getMe = async (req, res) => {
   try {
     const users = await query('SELECT id, name, email, phone, role, street_address, city, state, zip_code, created_at FROM users WHERE id = ?', [req.user.id]);
     if (users.length === 0) {
-      return res.status(404).json({ success: false, message: 'User account not found.' });
+      return res.status(404).json({ success: false, message: 'User not found.' });
     }
     res.json({ success: true, user: users[0] });
   } catch (err) {
@@ -146,17 +133,28 @@ exports.getMe = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, phone, street_address, city, state, zip_code } = req.body;
+    const { name, phone, password, street_address, city, state, zip_code } = req.body;
 
     if (!name) {
       return res.status(400).json({ success: false, message: 'Name is required.' });
     }
 
+    let passwordSql = '';
+    const params = [name, phone || null];
+
+    if (password && typeof password === 'string' && password.trim() !== '') {
+      const hashedPassword = await bcrypt.hash(password.trim(), 10);
+      passwordSql = ', password = ?';
+      params.push(hashedPassword);
+    }
+
+    params.push(street_address || null, city || null, state || null, zip_code || null, req.user.id);
+
     await query(`
       UPDATE users 
-      SET name = ?, phone = ?, street_address = ?, city = ?, state = ?, zip_code = ?, updated_at = CURRENT_TIMESTAMP
+      SET name = ?, phone = ?${passwordSql}, street_address = ?, city = ?, state = ?, zip_code = ?, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
-    `, [name, phone || null, street_address || null, city || null, state || null, zip_code || null, req.user.id]);
+    `, params);
 
     const updatedUsers = await query('SELECT id, name, email, phone, role, street_address, city, state, zip_code FROM users WHERE id = ?', [req.user.id]);
 
