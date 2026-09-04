@@ -135,8 +135,10 @@ exports.getOrderById = async (req, res) => {
 
     const items = await query(`
       SELECT oi.*, 
-        (SELECT image_url FROM product_images WHERE product_id = oi.product_id AND is_primary = 1 LIMIT 1) as primary_image
+        p.id as derived_product_id,
+        (SELECT image_url FROM product_images WHERE product_id = COALESCE(oi.product_id, p.id) AND is_primary = 1 LIMIT 1) as primary_image
       FROM order_items oi
+      LEFT JOIN products p ON oi.product_id = p.id OR oi.product_name = p.name
       WHERE oi.order_id = ?
     `, [id]);
 
@@ -145,7 +147,11 @@ exports.getOrderById = async (req, res) => {
       if (typeof cust === 'string') {
         try { cust = JSON.parse(cust); } catch (e) {}
       }
-      return { ...item, customization_values: cust || {} };
+      return { 
+        ...item, 
+        product_id: item.product_id || item.derived_product_id,
+        customization_values: cust || {} 
+      };
     });
 
     res.json({

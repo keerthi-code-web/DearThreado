@@ -67,6 +67,26 @@ const emotionalMessages = [
     message: "A little piece of my time, wrapped in love. DearThreado exists to turn simple moments into lasting memories.",
     accent: "#4C1D95",
     bg: "#FAF8FF"
+  },
+  {
+    id: 8,
+    tag: "Why We Gift",
+    title: "Why We Gift",
+    heading: "Effort Connects Hearts",
+    peek: "A gift is not just an object...",
+    message: "A gift is not just an object. It's a quiet message saying: 'I spent time thinking about you.'",
+    accent: "#EC4899",
+    bg: "#FDF2F8"
+  },
+  {
+    id: 9,
+    tag: "Handmade Touch",
+    title: "Handmade Touch",
+    heading: "Crafted With Purpose",
+    peek: "Machine-made items fill shelves...",
+    message: "Machine-made items fill shelves. Handmade items fill hearts with warmth and intention.",
+    accent: "#7C3AED",
+    bg: "#FAF8FF"
   }
 ];
 
@@ -290,7 +310,7 @@ const Home = () => {
                     </div>
 
                     {/* Envelope Content: Closed Peek vs Open Revealed Card */}
-                    <h5 className="fw-bold mb-2 text-dark">{item.title}</h5>
+                    <h5 className="fw-bold mb-2 text-dark">{isOpen && item.heading ? item.heading : item.title}</h5>
 
                     {!isOpen ? (
                       <div>

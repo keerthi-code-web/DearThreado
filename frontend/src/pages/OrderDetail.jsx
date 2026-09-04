@@ -56,10 +56,13 @@ const OrderDetail = () => {
     e.preventDefault();
     if (!reviewProduct) return;
 
+    const targetProductId = reviewProduct.product_id || reviewProduct.derived_product_id || reviewProduct.id;
+
     try {
       setSubmittingReview(true);
       const res = await api.post('/reviews', {
-        product_id: reviewProduct.product_id,
+        product_id: targetProductId,
+        product_name: reviewProduct.product_name,
         rating: reviewRating,
         comment: reviewComment
       });

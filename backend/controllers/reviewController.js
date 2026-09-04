@@ -3,8 +3,16 @@ const { query } = require('../config/db');
 exports.createReview = async (req, res) => {
   try {
     const userId = req.user.id;
-    const rawProductId = req.body.product_id || req.body.productId || req.body.id;
-    const { rating, comment, image_url } = req.body;
+    let rawProductId = req.body.product_id || req.body.productId || req.body.id;
+    const { rating, comment, image_url, product_name } = req.body;
+
+    // Fallback resolution: if product_id is missing/null, attempt lookup by product_name
+    if (!rawProductId && product_name) {
+      const pRows = await query('SELECT id FROM products WHERE name = ? LIMIT 1', [product_name]);
+      if (pRows.length > 0) {
+        rawProductId = pRows[0].id;
+      }
+    }
 
     if (!rawProductId) {
       return res.status(400).json({ success: false, message: 'Product ID is required.' });
