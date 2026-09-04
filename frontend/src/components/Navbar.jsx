@@ -43,83 +43,133 @@ const Navbar = () => {
         {/* Locked Navigation Links */}
         <div className={`collapse navbar-collapse ${mobileMenuOpen ? 'show mt-3' : ''}`}>
           <ul className="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-2 ms-lg-4">
-            <li className="nav-item">
-              <Link 
-                className={`nav-link px-3 fw-semibold ${isActive('/') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
-                to="/"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ color: isActive('/') ? '#7C3AED' : '#1E1B4B' }}
-              >
-                Home
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link 
-                className={`nav-link px-3 fw-semibold d-inline-flex align-items-center ${isActive('/cart') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
-                to="/cart"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ color: isActive('/cart') ? '#7C3AED' : '#1E1B4B' }}
-              >
-                <ShoppingBag size={18} className="me-1.5" />
-                <span className="me-1">Cart</span>
-                {cartCount > 0 && (
-                  <span className="badge rounded-pill text-white" style={{ backgroundColor: '#7C3AED', fontSize: '0.75rem', padding: '0.2em 0.5em' }}>
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link 
-                className={`nav-link px-3 fw-semibold ${isActive('/my-orders') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
-                to="/my-orders"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ color: isActive('/my-orders') ? '#7C3AED' : '#1E1B4B' }}
-              >
-                <Package size={18} className="me-1 mb-1" />
-                My Orders
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link 
-                className={`nav-link px-3 fw-semibold ${isActive('/profile') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
-                to="/profile"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ color: isActive('/profile') ? '#7C3AED' : '#1E1B4B' }}
-              >
-                <User size={18} className="me-1 mb-1" />
-                My Profile
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link 
-                className={`nav-link px-3 fw-semibold d-inline-flex align-items-center ${isActive('/notifications') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
-                to="/notifications"
-                onClick={() => setMobileMenuOpen(false)}
-                style={{ color: isActive('/notifications') ? '#7C3AED' : '#1E1B4B' }}
-              >
-                <Bell size={18} className="me-1.5" />
-                <span className="me-1">Notifications</span>
-                {unreadCount > 0 && (
-                  <span className="badge rounded-pill bg-danger pulse-badge" style={{ fontSize: '0.75rem', padding: '0.2em 0.5em' }}>
-                    {unreadCount}
-                  </span>
-                )}
-              </Link>
-            </li>
+            {user?.role === 'admin' ? (
+              <>
+                <li className="nav-item">
+                  <Link 
+                    className={`nav-link px-3 fw-semibold d-inline-flex align-items-center ${isActive('/admin/dashboard') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                    to="/admin/dashboard"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: isActive('/admin/dashboard') ? '#7C3AED' : '#1E1B4B' }}
+                  >
+                    <Shield size={18} className="me-1 mb-1" />
+                    Admin Portal
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link 
+                    className={`nav-link px-3 fw-semibold ${isActive('/') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                    to="/"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: isActive('/') ? '#7C3AED' : '#1E1B4B' }}
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link 
+                    className={`nav-link px-3 fw-semibold ${isActive('/profile') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                    to="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: isActive('/profile') ? '#7C3AED' : '#1E1B4B' }}
+                  >
+                    <User size={18} className="me-1 mb-1" />
+                    My Profile
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link 
+                    className={`nav-link px-3 fw-semibold d-inline-flex align-items-center ${isActive('/notifications') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                    to="/notifications"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: isActive('/notifications') ? '#7C3AED' : '#1E1B4B' }}
+                  >
+                    <Bell size={18} className="me-1.5" />
+                    <span className="me-1">Notifications</span>
+                    {unreadCount > 0 && (
+                      <span className="badge rounded-pill bg-danger pulse-badge" style={{ fontSize: '0.75rem', padding: '0.2em 0.5em' }}>
+                        {unreadCount}
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link 
+                    className={`nav-link px-3 fw-semibold ${isActive('/') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                    to="/"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: isActive('/') ? '#7C3AED' : '#1E1B4B' }}
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link 
+                    className={`nav-link px-3 fw-semibold d-inline-flex align-items-center ${isActive('/cart') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                    to="/cart"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: isActive('/cart') ? '#7C3AED' : '#1E1B4B' }}
+                  >
+                    <ShoppingBag size={18} className="me-1.5" />
+                    <span className="me-1">Cart</span>
+                    {cartCount > 0 && (
+                      <span className="badge rounded-pill text-white" style={{ backgroundColor: '#7C3AED', fontSize: '0.75rem', padding: '0.2em 0.5em' }}>
+                        {cartCount}
+                      </span>
+                    )}
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link 
+                    className={`nav-link px-3 fw-semibold ${isActive('/my-orders') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                    to="/my-orders"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: isActive('/my-orders') ? '#7C3AED' : '#1E1B4B' }}
+                  >
+                    <Package size={18} className="me-1 mb-1" />
+                    My Orders
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link 
+                    className={`nav-link px-3 fw-semibold ${isActive('/profile') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                    to="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: isActive('/profile') ? '#7C3AED' : '#1E1B4B' }}
+                  >
+                    <User size={18} className="me-1 mb-1" />
+                    My Profile
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link 
+                    className={`nav-link px-3 fw-semibold d-inline-flex align-items-center ${isActive('/notifications') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                    to="/notifications"
+                    onClick={() => setMobileMenuOpen(false)}
+                    style={{ color: isActive('/notifications') ? '#7C3AED' : '#1E1B4B' }}
+                  >
+                    <Bell size={18} className="me-1.5" />
+                    <span className="me-1">Notifications</span>
+                    {unreadCount > 0 && (
+                      <span className="badge rounded-pill bg-danger pulse-badge" style={{ fontSize: '0.75rem', padding: '0.2em 0.5em' }}>
+                        {unreadCount}
+                      </span>
+                    )}
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
 
           {/* User Controls / Auth Buttons */}
           <div className="d-flex align-items-center gap-2 mt-3 mt-lg-0">
             {user ? (
               <div className="d-flex align-items-center gap-3">
-                {user.role === 'admin' && (
-                  <Link to="/admin/dashboard" className="btn btn-sm btn-outline-purple d-flex align-items-center gap-1" style={{ color: '#7C3AED', borderColor: '#7C3AED' }}>
-                    <Shield size={16} /> Admin Portal
-                  </Link>
-                )}
                 <span className="fw-semibold text-truncate" style={{ maxWidth: '150px' }}>
-                  Hi, {user.name.split(' ')[0]}!
+                  Hi, {user.name?.split(' ')[0] || 'User'}!
                 </span>
                 <button 
                   onClick={() => { logout(); navigate('/'); }} 
