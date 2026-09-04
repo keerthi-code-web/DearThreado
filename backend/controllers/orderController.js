@@ -197,6 +197,12 @@ exports.cancelMyOrder = async (req, res) => {
       VALUES (NULL, 'Order Cancelled by Customer', ?, 'order_status', ?)
     `, [`Order #${order.order_number} was cancelled by customer ${order.customer_name}.`, id]);
 
+    // Customer notification
+    await query(`
+      INSERT INTO notifications (user_id, title, message, type, target_id)
+      VALUES (?, 'Order Cancelled', ?, 'order_status', ?)
+    `, [order.user_id, `Your order #${order.order_number} has been cancelled.`, id]);
+
     res.json({ success: true, message: `Order #${order.order_number} has been cancelled.` });
   } catch (err) {
     console.error('Cancel My Order Error:', err);

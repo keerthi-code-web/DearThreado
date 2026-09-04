@@ -121,7 +121,7 @@ const Cart = () => {
 
         {/* Order Summary */}
         <div className="col-lg-4">
-          <div className="dt-card p-4 sticky-top" style={{ top: '90px' }}>
+          <div className="dt-card p-4 sticky-top" style={{ top: '100px', zIndex: 10 }}>
             <h5 className="fw-bold text-dark mb-3">Order Summary</h5>
 
             <div className="d-flex justify-content-between mb-2">

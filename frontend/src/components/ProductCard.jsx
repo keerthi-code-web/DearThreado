@@ -7,7 +7,7 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="dt-card h-100 d-flex flex-column">
-      <div className="position-relative overflow-hidden" style={{ height: '230px', backgroundColor: '#FAF8FF' }}>
+      <div className="position-relative overflow-hidden" style={{ height: '220px', backgroundColor: '#FAF8FF' }}>
         <img 
           src={imageUrl} 
           alt={product.name} 
@@ -35,18 +35,20 @@ const ProductCard = ({ product }) => {
           </h5>
         </div>
 
-        <div className="mt-auto pt-2 border-top">
-          <div className="d-flex align-items-center justify-content-between">
-            <span className="fs-5 fw-bold" style={{ color: '#7C3AED' }}>
+        {/* Clean, uncongested bottom footer with price & bottom-aligned full-width View Product button */}
+        <div className="mt-auto pt-3 border-top">
+          <div className="d-flex align-items-center justify-content-between mb-2">
+            <span className="small text-muted fw-semibold">Price</span>
+            <span className="fs-5 fw-extrabold" style={{ color: '#7C3AED' }}>
               ₹{parseFloat(product.price).toFixed(2)}
             </span>
-            <Link 
-              to={`/product/${product.slug}`} 
-              className="btn btn-sm btn-dt-primary text-decoration-none"
-            >
-              View Product <ArrowRight size={14} />
-            </Link>
           </div>
+          <Link 
+            to={`/product/${product.slug}`} 
+            className="btn-dt-primary w-100 justify-content-center text-decoration-none py-2 fs-6"
+          >
+            View Product <ArrowRight size={14} />
+          </Link>
         </div>
       </div>
     </div>

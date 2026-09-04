@@ -16,7 +16,7 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <nav className="navbar navbar-expand-lg sticky-top bg-white border-bottom shadow-sm py-2">
+    <nav className="navbar navbar-expand-lg sticky-top bg-white border-bottom shadow-sm py-2" style={{ zIndex: 1050 }}>
       <div className="container">
         {/* Brand Logo */}
         <Link className="navbar-brand d-flex align-items-center gap-2" to="/">
@@ -55,18 +55,20 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link 
-                className={`nav-link px-3 fw-semibold position-relative ${isActive('/cart') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                className={`nav-link px-3 fw-semibold d-inline-flex align-items-center ${isActive('/cart') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
                 to="/cart"
                 onClick={() => setMobileMenuOpen(false)}
                 style={{ color: isActive('/cart') ? '#7C3AED' : '#1E1B4B' }}
               >
-                <ShoppingBag size={18} className="me-1 mb-1" />
+                <span className="d-inline-flex align-items-center me-1.5 position-relative">
+                  <ShoppingBag size={18} />
+                  {cartCount > 0 && (
+                    <span className="badge rounded-pill text-white ms-1" style={{ backgroundColor: '#7C3AED', fontSize: '0.7rem', padding: '0.2em 0.45em' }}>
+                      {cartCount}
+                    </span>
+                  )}
+                </span>
                 Cart
-                {cartCount > 0 && (
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-purple" style={{ backgroundColor: '#7C3AED' }}>
-                    {cartCount}
-                  </span>
-                )}
               </Link>
             </li>
             <li className="nav-item">
@@ -93,18 +95,20 @@ const Navbar = () => {
             </li>
             <li className="nav-item">
               <Link 
-                className={`nav-link px-3 fw-semibold position-relative ${isActive('/notifications') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
+                className={`nav-link px-3 fw-semibold d-inline-flex align-items-center ${isActive('/notifications') ? 'text-purple-primary border-bottom border-2 border-purple' : 'text-dark'}`} 
                 to="/notifications"
                 onClick={() => setMobileMenuOpen(false)}
                 style={{ color: isActive('/notifications') ? '#7C3AED' : '#1E1B4B' }}
               >
-                <Bell size={18} className="me-1 mb-1" />
+                <span className="d-inline-flex align-items-center me-1.5 position-relative">
+                  <Bell size={18} />
+                  {unreadCount > 0 && (
+                    <span className="badge rounded-pill bg-danger pulse-badge ms-1" style={{ fontSize: '0.7rem', padding: '0.2em 0.45em' }}>
+                      {unreadCount}
+                    </span>
+                  )}
+                </span>
                 Notifications
-                {unreadCount > 0 && (
-                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger pulse-badge">
-                    {unreadCount}
-                  </span>
-                )}
               </Link>
             </li>
           </ul>

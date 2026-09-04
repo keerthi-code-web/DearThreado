@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, ArrowRight, Heart, Gift, MessageCircleHeart, CheckCircle2 } from 'lucide-react';
+import { Sparkles, ArrowRight, Heart, MessageCircleHeart, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 import api from '../services/api';
 import ProductCard from '../components/ProductCard';
 import ThreadCurve from '../components/ThreadCurve';
@@ -9,13 +9,14 @@ const Home = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const scrollRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [catRes, prodRes] = await Promise.all([
           api.get('/categories'),
-          api.get('/products?limit=8')
+          api.get('/products?limit=12')
         ]);
         if (catRes.data.success) setCategories(catRes.data.categories || []);
         if (prodRes.data.success) setProducts(prodRes.data.products || []);
@@ -27,6 +28,16 @@ const Home = () => {
     };
     fetchData();
   }, []);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === 'left' ? -320 : 320;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const customizableProducts = products.filter(p => p.customization_enabled);
+  const displayProducts = customizableProducts.length > 0 ? customizableProducts : products;
 
   return (
     <div className="pb-5">
@@ -111,28 +122,47 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Featured Products Section */}
-      <section className="py-5">
+      {/* MODIFICATION #1: Clean Product-Focused Carousel for Customizable Gifts */}
+      <section className="py-5 overflow-hidden">
         <div className="container">
-          <div className="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between mb-4">
+          <div className="d-flex align-items-center justify-content-between mb-4">
             <div>
               <h2 className="fw-bold text-dark mb-1">Customizable Gifts</h2>
               <p className="text-muted small mb-0">Personalize with names, dates, colors, and heartfelt messages</p>
             </div>
-            <a href="#categories" className="btn btn-link text-purple-primary text-decoration-none fw-bold mt-2 mt-sm-0" style={{ color: '#7C3AED' }}>
-              View All Categories &rarr;
-            </a>
+            <div className="d-flex align-items-center gap-2">
+              <button 
+                onClick={() => scroll('left')} 
+                className="btn btn-sm btn-light border rounded-circle p-2 shadow-sm d-flex align-items-center justify-content-center"
+                style={{ width: '40px', height: '40px' }}
+                aria-label="Previous Products"
+              >
+                <ChevronLeft size={20} color="#7C3AED" />
+              </button>
+              <button 
+                onClick={() => scroll('right')} 
+                className="btn btn-sm btn-light border rounded-circle p-2 shadow-sm d-flex align-items-center justify-content-center"
+                style={{ width: '40px', height: '40px' }}
+                aria-label="Next Products"
+              >
+                <ChevronRight size={20} color="#7C3AED" />
+              </button>
+            </div>
           </div>
 
           {loading ? (
             <div className="text-center py-5">
               <div className="spinner-border text-purple" style={{ color: '#7C3AED' }} role="status"></div>
-              <p className="text-muted mt-2 small">Loading handmade gifts...</p>
+              <p className="text-muted mt-2 small">Loading customizable gifts...</p>
             </div>
           ) : (
-            <div className="row g-4">
-              {products.map((product) => (
-                <div key={product.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div 
+              ref={scrollRef} 
+              className="d-flex gap-4 overflow-x-auto pb-4 pt-1 no-scrollbar"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {displayProducts.map((product) => (
+                <div key={product.id} style={{ flex: '0 0 290px', minWidth: '290px' }}>
                   <ProductCard product={product} />
                 </div>
               ))}
