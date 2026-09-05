@@ -4,9 +4,9 @@
 
 > **Crafted with care, chosen with heart.**
 
-DearThreado is a full-stack e-commerce platform designed around handmade, personalized, and meaningful gifting.
+DearThreado is a full-stack e-commerce platform focused on handmade, personalized, and meaningful gifting.
 
-The platform provides a complete customer shopping experience along with an administrative management portal for managing products, categories, orders, reviews, and custom gift requests.
+The platform provides a complete customer shopping experience along with a dedicated administrative portal for managing products, categories, orders, reviews, custom gift requests, and store activities.
 
 This repository contains the completed **DearThreado MVP developed as an internship project**.
 
@@ -14,23 +14,13 @@ This repository contains the completed **DearThreado MVP developed as an interns
 
 ## ✨ Project Overview
 
-DearThreado focuses on making handmade and personalized gifting simple, meaningful, and convenient.
+DearThreado is designed around the idea that a meaningful gift is more than just an object.
 
-The platform allows customers to:
+The platform brings together handmade products, personalization, customer requests, and a structured ordering experience into one web application.
 
-- Explore handmade and personalized products
-- Browse products through categories and subcategories
-- View detailed product information
-- Personalize eligible products
-- Add products to cart
-- Place orders
-- Track order status
-- Cancel orders when applicable
-- Submit product reviews and ratings
-- Send custom gift requests
-- Receive notifications related to their activities
+Customers can explore products, personalize eligible gifts, place orders, track their orders, submit reviews, and communicate unique gift ideas through custom requests.
 
-The platform also provides an Admin Portal that enables administrators to manage the store and monitor important activities from a centralized dashboard.
+The Admin Portal provides centralized tools to manage the catalogue, orders, reviews, customer requests, and important store activities.
 
 ---
 
@@ -40,107 +30,125 @@ The main objectives of DearThreado are:
 
 - Provide a simple and user-friendly handmade gifting experience
 - Support personalized gifting workflows
-- Organize handmade products through meaningful categories
+- Organize handmade products through meaningful categories and subcategories
 - Allow customers to communicate custom gift requirements
-- Provide centralized administrative management
+- Provide a centralized administrative management system
 - Reduce unnecessary communication gaps between customers and administrators
-- Provide a structured full-stack e-commerce workflow
-- Create a foundation that can be extended into a larger gifting platform
+- Provide a complete full-stack e-commerce workflow
+- Create a scalable foundation for future development
 
 ---
 
-# 👥 User Side
+# 👥 Customer Side
 
-The customer-facing application provides the complete shopping experience.
+The customer-facing application provides the complete shopping and gifting experience.
 
-### 🏠 Home
+## 🏠 Home Page
 
 The home page introduces the DearThreado brand and provides access to:
 
-- Hero section
+- Brand introduction
 - Product categories
 - Handmade and gifting content
 - Product discovery
 - Custom gift request functionality
-- Meaningful brand-focused sections
+- Meaningful gifting messages
 - Navigation to major customer features
 
-The platform uses a consistent visual identity based around soft purple, pink, blue and golden/yellow accents.
+The visual identity follows the DearThreado theme using soft and warm colors, rounded layouts, subtle animations, and handmade-inspired visual elements.
 
 ---
 
-### 🌸 Product Categories
+## 🌸 Product Categories
 
 The current product organization includes:
 
-#### Floral
+### Floral
+
+**Subcategories:**
 - Flower Bouquets
 - Flower Frames
 - Floral Decor
 
-#### Pipecleaner
+### Pipecleaner
+
+**Subcategories:**
 - Pipe Cleaner Flowers
 - Pipe Cleaner Characters
 - Pipe Cleaner Decor
 
-#### Paper Craft
+### Paper Craft
+
+**Subcategories:**
 - Handmade Cards
 - Scrapbooks
 - Paper Flowers
 - Paper Decor
 
-#### Photo Related Products
+### Photo Related Products
+
+**Subcategories:**
 - Photo Frames
 - Photo Cards
 - Photo Gifts
 
-Products are organized through the:
+Products follow the structured:
 
-**Category → Subcategory → Product**
+**Main Category → Subcategory → Product**
 
 workflow.
 
 ---
 
-### 🛍️ Product Discovery
+## 🛍️ Product Discovery
 
 Customers can:
 
-- Browse products
-- Filter products using subcategories
+- Browse product categories
+- Browse subcategories
+- Filter products
+- View product cards
 - View product details
 - Identify customizable products
 - View product pricing
-- View available product information
-- Open individual product pages
+- View product information
 
 ---
 
-### 🎨 Product Personalization
+## 🎨 Product Personalization
 
-Eligible products support personalization.
+Eligible products support product-specific personalization.
 
-Customers can provide the required customization information while ordering a product.
+Depending on the product, customers can provide required customization information such as:
 
-For photo-related personalization, customers can upload the required image directly through the application.
+- Personal text
+- Recipient information
+- Color selection
+- Dropdown selections
+- Additional instructions
+- Uploaded images
+
+Photo-related customization allows customers to upload images directly from their device.
 
 ---
 
-### 🛒 Cart
+## 🛒 Shopping Cart
 
 Customers can:
 
 - Add products to the cart
 - Review selected products
-- Review quantities and prices
-- Review order summary
-- Proceed toward order placement
+- Manage cart items
+- Review quantities
+- Review prices
+- Review the order summary
+- Proceed to checkout
 
-After an order is successfully placed, the purchased cart items are cleared from the active cart so that the customer does not accidentally treat already-purchased products as pending cart items.
+After an order is successfully placed, the purchased items are removed from the active cart so that already-purchased items do not remain in the customer's cart.
 
 ---
 
-### 📦 Orders
+## 📦 Orders
 
 Customers can access their orders through **My Orders**.
 
@@ -153,26 +161,28 @@ The order workflow supports:
 - Delivery
 - Cancellation where applicable
 
-Order information is maintained separately from the customer's active cart.
+Order information is maintained separately from the customer's active shopping cart.
 
 ---
 
-### ⭐ Reviews & Ratings
+## ⭐ Reviews & Ratings
 
-Customers can submit:
+Customers can submit reviews for eligible purchased products.
 
-- Product ratings
-- Written reviews
+Reviews support:
 
-Ratings are based on actual submitted customer reviews rather than displaying artificial pre-existing ratings when no reviews exist.
+- Star ratings
+- Written review comments
 
-Submitted reviews are also available for administrative management.
+Ratings are based on actual customer-submitted reviews.
+
+Products without actual reviews do not display artificial or pre-filled customer ratings.
 
 ---
 
-### 💡 Custom Gift Requests
+## 💡 Custom Gift Requests
 
-Customers can submit requests for customized or unique gift ideas.
+Customers can submit requests for unique or personalized gift ideas.
 
 A request can contain relevant information such as:
 
@@ -182,37 +192,42 @@ A request can contain relevant information such as:
 - Reference image
 - Customer information
 
-This allows customers to communicate ideas beyond the predefined product catalogue.
+Administrators can review these requests and respond or update their status through the Admin Portal.
 
 ---
 
-### 🔔 Notifications
+## 🔔 Notifications
 
-The customer side includes notifications for relevant account and order activities.
+The customer side provides in-app notifications for relevant activities such as:
+
+- Order updates
+- Order cancellation
+- Review-related activities
+- Custom request updates
 
 The notification indicator provides a quick overview of available notifications.
 
 ---
 
-### 👤 My Profile
+## 👤 Customer Profile
 
-Customers can manage their profile information through the profile section.
+Customers can manage their account information through the profile section.
 
 ---
 
 # 🛠️ Admin Portal
 
-DearThreado includes a dedicated administrative portal separate from the customer shopping experience.
+DearThreado includes a dedicated **Admin Portal** separate from the customer shopping experience.
 
-The Admin Portal provides centralized management of the store.
+The Admin Portal is the main administrative entry point and provides centralized control over store operations.
 
 ---
 
 ## 📊 Admin Dashboard
 
-The Admin Portal dashboard provides an overview of store activity.
+The Admin Portal dashboard provides an overview of important store activities.
 
-Major statistics include:
+The major dashboard statistics include:
 
 - Total Revenue
 - New Orders
@@ -221,7 +236,7 @@ Major statistics include:
 - Delivered Orders
 - Cancelled Orders
 
-The dashboard also provides access to the major management modules.
+The dashboard also provides direct access to the major administrative modules.
 
 ---
 
@@ -248,8 +263,8 @@ Administrators can:
 - Edit products
 - Delete products
 - Associate products with categories and subcategories
-- Configure product information
-- Configure customization-related information
+- Maintain product information
+- Configure product customization
 - Manage product images
 
 ---
@@ -259,12 +274,15 @@ Administrators can:
 Administrators can:
 
 - View customer orders
-- View order information
+- View order details
+- View customer information
 - View customization details
 - View customer-uploaded customization images
 - Download customer-uploaded images when required
 - Monitor order status
 - Manage order-related information
+
+This allows customer-uploaded images required for personalized products to be accessed directly by the administrator instead of requiring customers to send them through external communication platforms.
 
 ---
 
@@ -294,16 +312,13 @@ Administrators can:
 
 ## 🔔 Admin Notifications
 
-The Admin Portal includes notifications for important activities.
-
-This includes customer-related events such as:
+The Admin Portal provides notifications for important activities, including:
 
 - New orders
-- New requests
+- New custom gift requests
 - New reviews
-- Order cancellation events
-
-The notification indicator provides an overview of relevant unread notifications.
+- Customer order cancellations
+- Other relevant administrative events
 
 ---
 
@@ -328,39 +343,38 @@ The notification indicator provides an overview of relevant unread notifications
 ## Database
 
 - MySQL
-- SQLite support for local development / fallback workflows
+- SQLite support for local development
 
-## Development Tools
+## Other Technologies & Tools
 
+- JWT Authentication
+- bcrypt Password Hashing
+- REST API architecture
 - Git
 - GitHub
 - npm
-- VS Code / development environment
 
 ---
 
 # 🧩 High-Level Architecture
 
 ```text
-                    ┌──────────────────────┐
-                    │      DearThreado     │
-                    │      Web Platform    │
-                    └──────────┬───────────┘
-                               │
-                ┌──────────────┴──────────────┐
-                │                             │
-        ┌───────▼────────┐           ┌────────▼────────┐
-        │  Customer Side │           │   Admin Portal   │
-        └───────┬────────┘           └────────┬────────┘
-                │                             │
-                └──────────────┬──────────────┘
-                               │
-                       ┌───────▼────────┐
-                       │  Express API   │
-                       │    Backend     │
-                       └───────┬────────┘
-                               │
-                       ┌───────▼────────┐
-                       │    Database    │
-                       │ MySQL / SQLite │
-                       └────────────────┘
+                         DearThreado
+                              │
+                ┌─────────────┴─────────────┐
+                │                           │
+        ┌───────▼────────┐         ┌────────▼────────┐
+        │ Customer Side  │         │  Admin Portal    │
+        └───────┬────────┘         └────────┬─────────┘
+                │                           │
+                └─────────────┬─────────────┘
+                              │
+                     ┌────────▼────────┐
+                     │   Express API   │
+                     │    Backend      │
+                     └────────┬────────┘
+                              │
+                     ┌────────▼────────┐
+                     │    Database     │
+                     │  MySQL / SQLite │
+                     └─────────────────┘
