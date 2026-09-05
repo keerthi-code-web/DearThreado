@@ -1,11 +1,13 @@
 import React from 'react';
 import { Bell, CheckCheck, Package, MessageSquare, Star } from 'lucide-react';
 import { useNotifications } from '../context/NotificationContext';
+import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { formatDateTime } from '../utils/formatters';
 
 const Notifications = () => {
   const { notifications, markAsRead, markAllAsRead } = useNotifications();
+  const { user } = useAuth();
 
   const getIcon = (type) => {
     switch (type) {
@@ -63,7 +65,11 @@ const Notifications = () => {
                 <p className="text-muted small mb-2">{n.message}</p>
 
                 {n.target_id && n.type === 'order_status' && (
-                  <Link to={`/orders/${n.target_id}`} className="fw-bold small text-purple-primary text-decoration-none" style={{ color: '#7C3AED' }}>
+                  <Link 
+                    to={user?.role === 'admin' ? '/admin/orders' : `/orders/${n.target_id}`} 
+                    className="fw-bold small text-purple-primary text-decoration-none" 
+                    style={{ color: '#7C3AED' }}
+                  >
                     View Order Details &rarr;
                   </Link>
                 )}
