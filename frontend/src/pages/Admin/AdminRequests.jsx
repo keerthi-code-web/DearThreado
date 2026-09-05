@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { MessageSquare, Check, Send } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { MessageSquare, Check, Send, ArrowLeft } from 'lucide-react';
 import api from '../../services/api';
 import { formatDateTime } from '../../utils/formatters';
 
@@ -65,6 +66,12 @@ const AdminRequests = () => {
 
   return (
     <div className="container py-5">
+      <div className="mb-3">
+        <Link to="/admin/dashboard" className="btn btn-sm btn-outline-purple d-inline-flex align-items-center gap-1.5 fw-semibold rounded-pill px-3" style={{ color: '#7C3AED', borderColor: '#DDD6FE', backgroundColor: '#ffffff' }}>
+          <ArrowLeft size={16} /> Back to Admin Portal
+        </Link>
+      </div>
+
       <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
         <div>
           <h2 className="fw-bold text-dark mb-1">Product Request & Feedback Queue</h2>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Edit, Trash2, FolderTree } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Plus, Edit, Trash2, FolderTree, ArrowLeft } from 'lucide-react';
 import api from '../../services/api';
 
 const AdminCategories = () => {
@@ -117,6 +118,12 @@ const AdminCategories = () => {
 
   return (
     <div className="container py-5">
+      <div className="mb-3">
+        <Link to="/admin/dashboard" className="btn btn-sm btn-outline-purple d-inline-flex align-items-center gap-1.5 fw-semibold rounded-pill px-3" style={{ color: '#7C3AED', borderColor: '#DDD6FE', backgroundColor: '#ffffff' }}>
+          <ArrowLeft size={16} /> Back to Admin Portal
+        </Link>
+      </div>
+
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 className="fw-bold text-dark mb-1">Category & Subcategory Management</h2>

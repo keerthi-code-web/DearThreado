@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Package, Calendar, CheckCircle, AlertTriangle, Eye, XCircle, Download } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Package, Calendar, CheckCircle, AlertTriangle, Eye, XCircle, Download, ArrowLeft } from 'lucide-react';
 import api from '../../services/api';
 import StatusBadge from '../../components/StatusBadge';
 import { formatDate } from '../../utils/formatters';
@@ -141,6 +142,12 @@ const AdminOrders = () => {
 
   return (
     <div className="container py-5">
+      <div className="mb-3">
+        <Link to="/admin/dashboard" className="btn btn-sm btn-outline-purple d-inline-flex align-items-center gap-1.5 fw-semibold rounded-pill px-3" style={{ color: '#7C3AED', borderColor: '#DDD6FE', backgroundColor: '#ffffff' }}>
+          <ArrowLeft size={16} /> Back to Admin Portal
+        </Link>
+      </div>
+
       {/* 1. ORDERS TITLE + DESCRIPTION */}
       <div className="mb-4">
         <h2 className="fw-bold text-dark mb-1">Order Management & Tracking</h2>
